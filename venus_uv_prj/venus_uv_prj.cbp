@@ -33,7 +33,7 @@
 		</Compiler>
 		<Unit filename="SUN_UV.f90" />
 		<Unit filename="UV_H20.f90" />
-		<Unit filename="UV_for_KD.f90" />
+		<Unit filename="UV_for_KD_.f90" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
