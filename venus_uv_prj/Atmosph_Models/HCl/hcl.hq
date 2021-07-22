@@ -1,2 +1,4 @@
-  0 0.5e-6
-100 0.5e-6
+height, km; mixing ratio, ppmv
+  0 0.5
+100 0.5
+140 0.5
