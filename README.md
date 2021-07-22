@@ -3,10 +3,9 @@
 This project is dedicated to calculations of radiative transfer in Venus' atmosphere in ultraviolet region.
 
 # What do you need to run the project
-
-fortran90
-
-python 3.8 (or lower, simple scripts)
+ 
+- codeblocks (preferable) with GNU Fortran Compiler - to run existing .cbp project, otherwise you need manually add files and create project in other IDE.
+- any IDE for python (Spyder 5 was used, python 3.8.8)
 
 # Credits
 
@@ -17,7 +16,7 @@ python 3.8 (or lower, simple scripts)
 
 **Collaborators and contributors**:
 
-- Boris Fomin, central aerological observatory, Russia
+- Boris Fomin, Central Aerological Observatory, Moscow
 (https://www.researchgate.net/profile/Boris-Fomin)
 
 
@@ -27,3 +26,5 @@ python 3.8 (or lower, simple scripts)
 # Insructions and description of the project
 
 # License
+
+This project is supplied with GNU general public license v3.0
