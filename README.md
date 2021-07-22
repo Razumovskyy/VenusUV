@@ -29,7 +29,7 @@ This project is dedicated to calculations of radiative transfer in Venus' atmosp
 -  Directory **./venus_uv_prj/Solar_Irradiance** contains data files with solar spectral irradiances from various sources.
 -  Directory **./venus_uv_prj/Atmosph_Models** contains data files with atmospheric profiles: temperature, pressure, density. The data encompasses individual gaseous features as well as cumulative features from VIRA (Venus International Reference Atmosphere).
 
-## Data sources and 
+## Data and sources
 
 ### Mixing ratios of gaseous constituents
 
