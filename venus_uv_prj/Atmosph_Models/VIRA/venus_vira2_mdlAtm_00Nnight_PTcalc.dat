@@ -1,5 +1,5 @@
 LATITUDE VIRA2 0-49 VIRA1 50-100 0 DEG VIRA2 102-148 0:00 (Midnight) Seiff1983 FPMills 09/18/2014
-%ALT %TEMP_VIRA2_day %TEMP_90-130_Ls %TEMP_200-270_Ls %PRE_VIRA2_day %PRE_90-130_Ls %PRE_200-270_Ls
+%ALT(km) %TEMP_VIRA2_day (K) %TEMP_90-130_Ls (K) %TEMP_200-270_Ls (K) %PRE_VIRA2_day (mbar) %PRE_90-130_Ls (mbar) %PRE_200-270_Ls (mbar)
       0.00000       735.300       735.300       735.300       92100.0       92100.0       92100.0 
       1.00000       727.700       727.700       727.700       86450.0       86450.0       86450.0 
       2.00000       720.200       720.200       720.200       81090.0       81090.0       81090.0 

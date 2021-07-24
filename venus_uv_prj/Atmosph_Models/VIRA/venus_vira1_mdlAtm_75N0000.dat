@@ -1,5 +1,5 @@
 LATITUDE VIRA1 75 DEG VIRA1 0:00 (Midnight) Seiff1983 FPMills 09/12/2014 
-%ALT %DEN %TEMP %PRE
+%ALT (km) %DEN (g/cm^3) %TEMP (K) %PRE (mbar)
       0.00000   8.98000e+20       735.300       92100.0 
       1.00000   8.53200e+20       727.700       86450.0 
       2.00000   8.10100e+20       720.200       81090.0 

@@ -1,5 +1,5 @@
 %LATITUDE VIRA2 0-49 VIRA1 50-100 70-80 DEG Day VIRA2 102-148 12:00 (Noon) Sieff1983 FPMills 09/13/2014 
-%ALT %DEN %TEMP %PRE
+%ALT (km) %DEN (g/cm^3) %TEMP (K) %PRE (mbar)
       0.00000   9.07200e+20       735.300       92100.0 
       1.00000   8.60400e+20       727.700       86450.0 
       2.00000   8.15500e+20       720.200       81090.0 
