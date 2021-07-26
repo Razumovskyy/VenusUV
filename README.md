@@ -40,7 +40,7 @@ Data files with mixing ratios of gaseous constituents have extensions .hq and ar
 ## Examples and some results
 
 ## Main output files (for up-to-date version)
-**./venus_uv_prj/00&75clo.50500-80000**: height, exact downward flux (0 deg), exact downward flux (75 deg), exact upward flux (0 deg), exact upward flux (75 deg) (?)
+**./venus_uv_prj/00&75clo.50500-80000**: height, exact downward flux (0 deg), exact downward flux (75 deg), exact upward flux (0 deg), exact upward flux (75 deg) (?); first line - simply calculated downward flux at the top of the atmosphere.
 
 **./venus_uv_prj/K_FDO_FUP_FUPKD.00deg** (or 75 deg): height, number of molecules through the ray, sigma, exact downward flux, exact upeard flux, approximate upward flux (for one zenith angle)
 
