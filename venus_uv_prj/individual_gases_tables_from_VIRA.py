@@ -40,16 +40,20 @@ for p in gases_names:
         gas_c = mix_rat(gas_h)*1e-6*vira_concentration*1e5 #concentration
     
         save_file = "./Atmosph_Models/"+ pp + "/" + ppp + "_gas_profile.dat"
-        header =  ppp + "\n number of lines:\n" + str(len(gas_h)) + "\n height(km), pressure(mbar), temperature(K), concentration (molecules/cm^2*km)"
+        header =  "Haus2015\n" + str(len(gas_h)) + "\n" + pp + " #height(km), pressure(mbar), temperature(K), concentration (molecules/cm^2*km)"
         
-        np.savetxt (save_file, np.transpose ((gas_h, gas_p, gas_t, gas_c)), header=header, delimiter='  ', fmt=fmt)
+        np.savetxt (save_file, np.transpose ((gas_h, gas_p, gas_t, gas_c)), header=header, delimiter='  ', comments='', fmt=fmt)
         
-
+        index60 = np.where(gas_h==60.)[0][0]
+        
+        save_file60 = "./Atmosph_Models/"+ pp + "/" + ppp + "_gas_profile_60km.dat"
+        header60 = "Haus2015\n" + str(len(gas_h[index60:])) + "\n" + pp + " #height(km), pressure(mbar), temperature(K), concentration (molecules/cm^2*km)"
+        np.savetxt (save_file60, np.transpose((gas_h[index60:], gas_p[index60:], gas_t[index60:], gas_c[index60:])), header=header60, delimiter='  ', comments='', fmt=fmt)
+        
+        
 #x = np.linspace(0, 100, num=85, endpoint=True) #vary right border to 80 or 100 km if error
 #plt.plot(mixratio, height, 'o', mix_rat(x), x, '-')
 #plt.xscale('log')
 #plt.ylim([0,100])
 #plt.xlim([0.001, 1000])
 #plt.show()
-
-

@@ -211,7 +211,7 @@ READ(99,947)RES
 	455 format(A40)
     READ(55,455) At_Name
     write (*,*) At_Name
-	READ(55,*)ngazov,JMAX ! <-- Number of levels in Atmospheric Model.
+	READ(55,*) JMAX ! <-- Number of levels in Atmospheric Model.
 456 format(A4) ; read(55,456)GAZ
 write(*,*)gaz,At_Name
 	WRITE(66,*)gaz,'The number of levels (JMAX) : ',JMAX
