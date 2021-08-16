@@ -1,9 +1,9 @@
-height, km; mixing ratio, ppmv
+#height, km; mixing ratio, ppmv
   0  32.5
  50  32.5
- 60  5.
- 75  2.
- 85  2.
- 90  1.
-100  1.
-150  1.
+ 60  6.5
+ 70  3.
+ 80  3.
+ 90  3.
+100  3.
+150  3.

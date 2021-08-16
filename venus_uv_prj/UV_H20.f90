@@ -2,7 +2,7 @@ FUNCTION UV_Absorption(WN)
 ! *** the function NAME is the same for any species ***
 !#JPL 2011
 !#lambda[nm] sigma [1e20 cm2]
-CHARACTER UV_name*100
+CHARACTER UV_abs_name*100
 !PARAMETER (NP=98,BD1=121.,BD2=198.)
 !DIMENSION S(NP),BDA(NP)
 PARAMETER (NPmax=24000)
@@ -11,10 +11,10 @@ REAL*4 S(NPmax), BDA(NPmax)
 
 OPEN (57, FILE='Initial_UV.dat')
 455 FORMAT (A100)
-READ (57, 455) UV_name
+READ (57, 455) UV_abs_name
 CLOSE(57)
 
-OPEN (58, FILE=UV_name)
+OPEN (58, FILE=UV_abs_name)
 READ (58, *)
 READ (58, *) NP
 DO I=1,NP
