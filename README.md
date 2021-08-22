@@ -1,9 +1,10 @@
 # General information about Venus_UV and Credits:
-This project is dedicated to calculations of radiative transfer in Venus' atmosphere in ultraviolet region.
+This project is dedicated to creating correlated-k models of radiative transfer in Venus' atmosphere. Spectral region of interest is
+0.125-1000 μm. Because of evident difficulties with visible and IR region (line shapes, spectral databases), we firstly concentrated on taking account of UV region (125 - 400 nm). Refernce radiative transfer model is based on line-by-line procedures and Monte Carlo simulations to obtain height-dependend fluxes and temperature changing rates. We focus on studing lower and middle atmosphere (0-100 km), but modeling range of heights is prolonged upward to 140 km.
 
 **Maintainer of the project**: 
 
-- Mikhail Razumovskiy, Moscow Institute of Physics and Technology, Applied Infrared Spectroscopy Laboratory
+- Mikhail Razumovskiy, Moscow Institute of Physics and Technology, Moscow
 (https://www.researchgate.net/profile/Mikhail-Razumovskiy)
 
 **Collaborators and contributors**:
