@@ -1,0 +1,7 @@
+ 50500.0  80000.0                                                                                                       !  Wavenumber Range (cm^1)
+1.0                                                                                                                                         ! Albedo
+ .\Atmosph_Models\CO2_gas_profile.dat                                !   FileName for Atmospher&Result
+2                                                                                                                                           ! Number  SZA
+0.0 75.0                                                                                                                             ! Standard SZA
+00&75CO2_.50500-80000                                                                                                      ! File-Name  for CALC.
+
