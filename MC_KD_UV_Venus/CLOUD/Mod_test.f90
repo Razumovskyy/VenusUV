@@ -1,0 +1,23 @@
+CHARACTER*1 NAMB
+
+NAMB='4'
+
+OPEN(10,FILE='MODA'//NAMB//'.B')
+OPEN(11,FILE=NAMB)
+
+DO J=1,999999
+READ(10,*,END=1)BDA,RN,S,E,A ; WN=10000./BDA ; NUG=RN+1
+WRITE(11,*)BDA,WN,S,E,A
+WRITE(*,*)BDA,WN,S,E,A
+OPEN(9,FILE='PLOT')
+WRITE(9,*)'1',NUG
+   DO JJ=1,NUG
+   READ(10,*)UG,P1,P2   ;  P=(P1+P2)/2. ; P=ALOG10(P)
+   WRITE(9,*)UG,P
+   END DO
+CLOSE(9)
+result=RUNQQ('ToDraw.exe','plot')
+!### PAUSE
+END DO
+1 WRITE(*,*)' *** Ok! ->  ',NAMB,' ***'
+END

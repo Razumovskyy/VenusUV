@@ -1,0 +1,39 @@
+ 31746.d0 35716.D0
+30.                                                       10. 40. 70.
+40                             
+TRP.O3_000
+1
+c:\databases\Surfaces\0.0
+B_TRP000DU_30p0.Alb0p0
+0.0 
+
+
+
+
+
+31746.d0 35716.D0
+30.0                                                       10. 40. 70.
+40                             
+TRP.O3_000
+1
+c:\databases\Surfaces\1.0
+B_TRP000DU_30p0.Alb1p0
+0.0 
+
+
+31746.d0 35716.D0
+30.0                                                       10. 40. 70.
+400                             
+TRP.O3_250_5
+1
+c:\databases\Surfaces\snow.txt
+5_B_TRP250DU_30p0.Albsnow
+0.0 
+
+
+c:\databases\Surfaces\0.1
+ B_TRP350DU_30p0.Alb0P1 
+   
+c:\databases\Surfaces\snow.txt
+B_TRP250DU_30p0.AlbSnow 
+

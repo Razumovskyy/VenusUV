@@ -1,0 +1,17 @@
+0.0
+0.1
+40000
+./ATMOSPHERES/SO2_gas_profile.dat
+5KD_SO2_0deg.25000-3E4
+
+
+!* ---------------------------------------------------------------- *
+OPEN(IOUT,FILE='CONTROL_KD.INP')
+  READ(IOUT,*)ANGLE
+  READ(IOUT,*)ALBED_1 ; ALBED=ALBED_1
+  READ(IOUT,*)NGAME_1 ; NGAME= NGAME_1
+  READ(IOUT,765)FIFI2
+  READ(IOUT,567)METKA(1)
+765 FORMAT(A40)  
+567 FORMAT(A25)
+CLOSE(IOUT)

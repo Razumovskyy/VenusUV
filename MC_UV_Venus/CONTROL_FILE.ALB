@@ -1,0 +1,8 @@
+ 25000.d0 30000.D0                                                                                                           <- Spectral Region
+0.                                                                                                                                             <- SZA               
+400                                                                                                                                         <- Photons             
+./ATMOSPHERES/SO2_gas_profile.dat                                                                        <- Atmosphere
+.\Surfaces\0.0                                                                                                                       <- File with Albedo
+MC-SO2_0deg.25000-3E4                                                                                                < - File with Result
+0.0                                                                                                                                          < Solar Flux corrections
+
