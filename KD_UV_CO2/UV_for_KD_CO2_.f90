@@ -32,10 +32,10 @@ VA=V1+DELT*KKK
 VB=VA+DELT
 
 !================================!
-DO I=1,NTH  ! ### V-Loop (over each of NTH Wavenamber Points)
+DO I=1,NTH  ! *** V-Loop (over each of NTH Wavenamber Points)
 
 ! --------------------------------!
-WES=H/3.    ! ### see Simpthon's Rule for Wavenumber Integration
+WES=H/3.    ! *** see Simpthon's Rule for Wavenumber Integration
 IF(I>1.AND.I<NTH)THEN
  IF(I/2*2==I)THEN
  WES=WES*4.
@@ -181,48 +181,69 @@ CLOSE(21)
 END
 
 SUBROUTINE  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES)
-CHARACTER ATM_PATH*100, At_Name*21, GAZ*4, RES*20
-REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200)
+CHARACTER ATM_PATH*100, ATM_NAME*120, GAS_NAME*4, RES*20
+REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
 
- ! --- Reeding of Initial Data in FILE='Initial.dat'--- !
-    OPEN(66,FILE='Check.inform') ! for Control
+ ! --- Reading input data from file Initial.dat--- !
+
+    OPEN(66,FILE='Check-inform.dat') ! *** here would be printed gas profile from ATM_PATH - for control *** !
 	OPEN(99,FILE='Initial.dat')
 	READ(99,*)V1,V2
 	READ(99,*)ALBEDO
-	READ(99,98)ATM_PATH  ! *** File with Atmospheric Model *** !
-98 FORMAT(A50)
-		WRITE(66,*)' The atmospheric conditions from file = ',ATM_PATH
-                READ(99,*)NAG
-				IF(NAG>NAGL)THEN
-   WRITE(*,*)'*** Check NUMBER of Angles => ', NAGL,NAG ; STOP
-				END IF
-READ(99,*)ANGLE
-DO N=1,NAG
-CANGLE(N)=COS(ANGLE(N)*3.1416/180.0)
-END DO
-READ(99,947)RES
-947 FORMAT(A20)
-		CLOSE(99)
-!---------------------------------- !
+
+	READ(99,98)ATM_PATH  ! *** extract path to gas profile *** !
+    98 FORMAT(A50)
+    WRITE(66,*)' The atmospheric conditions from file = ',ATM_PATH
+
+    READ(99,*)NAG
+
+	IF(NAG>NAGL)THEN
+    WRITE(*,*)'*** Check NUMBER of Angles => ', NAGL,NAG ; STOP ! ***exception for the case if number of input zenith angles is more than NAGL*** !
+	END IF
+
+    READ(99,*)ANGLE
+
+    DO N=1,NAG
+        CANGLE(N)=COS(ANGLE(N)*3.1416/180.0) ! *** creating array with cos of set zenith angles ***
+    END DO
+
+    READ(99,947)RES
+    947 FORMAT(A20)
+
+	CLOSE(99) ! *** closing file Initial.dat ***
+!--------------------------------------------------!
 
 ! --- Reading information about Atmosphere in FILE=ATM_PATH --- !
+
 	OPEN(55,FILE=ATM_PATH)
 
-455 format(A21) ; READ(55,455)At_Name
-	READ(55,*)ngazov,JMAX ! <-- Number of levels in Atmospheric Model.
-456 format(A4) ; read(55,456)GAZ
-write(*,*)gaz,At_Name
-	WRITE(66,*)gaz,'The number of levels (JMAX) : ',JMAX
+    455 FORMAT(A120)
+    READ(55,455)ATM_NAME
+
+	READ(55,*)ngazov,JMAX ! *** extract number of gases and number of levels in gas profile ***
+
+    456 format(A4)
+    READ(55,456)GAS_NAME
+
+    WRITE(*,*)GAS_NAME ! *** printing gas name (CO2) before calculations - for control ***
+    WRITE(*,*)ATM_NAME ! *** printing source of mixing ratio profile and VIRA atmospheric file before calculations- for control ***
+
+	WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat ***
 	DO J=1,JMAX
-	READ(55,*)Z(J),P(J),ttt,RO(J)  ! Altitude, Pressure and Concentration.
-	WRITE(66,*)j,Z(J),P(J),ttt,RO(J)
-	END DO
+	READ(55,*)Z(J),P(J),T(J),RO(J)  ! Altitude, Pressure (total), Temperature and Concentration of gas
+	WRITE(66,*)J,Z(J),P(J),T(J),RO(J)
+	END DO                                                    ! *** end optional printing to Check-inform.dat ***
+
+    CLOSE(55) ! *** closing file with gas profile ***
+    CLOSE(66) ! *** closing Check-inform file ***
 
 !---- Calculation of Molecules along the Solar Ray in  mol/(cm*cm) --- !
+
 	SUMRO(JMAX)=0.
 	DO J=JMAX,2,-1
 	SUMRO(J-1)=SUMRO(J)+0.5*(RO(J)+RO(J-1))*(Z(J)-Z(J-1))
 	END DO
-		CLOSE(55)
-                CLOSE(66)
+
+!-----------------------------------------------------------------------!
+
   END
