@@ -228,7 +228,7 @@ REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
     WRITE(*,*)GAS_NAME ! *** printing gas name (CO2) before calculations - for control ***
     WRITE(*,*)ATM_NAME ! *** printing source of mixing ratio profile and VIRA atmospheric file before calculations- for control ***
 
-	WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat ***
+    WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat ***
 	DO J=1,JMAX
 	READ(55,*)Z(J),P(J),T(J),RO(J)  ! Altitude, Pressure (total), Temperature and Concentration of gas
 	WRITE(66,*)J,Z(J),P(J),T(J),RO(J)

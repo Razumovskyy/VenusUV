@@ -77,8 +77,8 @@ def uv_acs_plot_wavenum():
     plt.legend()
     plt.show()  
 
-uv_acs_plot_nm()
-#uv_acs_plot_wavenum()
+#uv_acs_plot_nm()
+uv_acs_plot_wavenum()
 
 
 
