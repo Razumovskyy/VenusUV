@@ -1,4 +1,4 @@
-CHARACTER ATM_PATH*100,RES*20, ATM*3
+CHARACTER ATM_PATH*100,RES*50, ATM*3
 INTEGER*4  JMAX,NAGL
 REAL*4  V1,V2,ALBEDO
 PARAMETER (NTH=1001, DELT=100.0, H=DELT/(NTH-1.0), NAGL=2,J200=200,CP_CONST=3.963) !  *** CP_CONST for  Venus = 3.963 (see Heating Rates calc.)***'
@@ -12,7 +12,7 @@ REAL*4 Z(J200),TAUMA(J200),TAUMA_EF(J200,NAGL),P(J200),ANGLE(NAGL),RO(J200),CANG
 		,Qex(J200,NAGL),Qap(J200,NAGL)
 
 ! ***
- CALL  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES)
+CALL  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES)
 !*** In this subroutine will be defined:
 !*** V1,V2 - Spectral Region (cm-1) ; ALBEDO  - Albedo (usually 1.0);  NAGL- Maximal Number of Zenith Angles;  NAG- Real Number of Zenith Angles (NAG<=NAGL)
 !*** Z- Array of Altitudes km Z(1,2,...,JMAX)  ; P- Array  of Pressures atm P(1,2,...,JMAX)  ;
@@ -25,65 +25,67 @@ OPEN(11,FILE=RES)  ! *** Filename with calc
 
 FLUXUP=0. ; FLUXDO=0.
 JMAX1=JMAX-1
- sum=0.0
+sum=0.0
+
 DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
-FUP=0. ; FDO=0.  !*** Arrays for Fluxes at each Altitude Level
-VA=V1+DELT*KKK
-VB=VA+DELT
+
+    FUP=0. ; FDO=0.  !*** Arrays for Fluxes at each Altitude Level
+    VA=V1+DELT*KKK
+    VB=VA+DELT
 
 !================================!
-DO I=1,NTH  ! *** V-Loop (over each of NTH Wavenamber Points)
+    DO I=1,NTH  ! *** V-Loop (over each of NTH Wavenamber Points)
 
 ! --------------------------------!
-WES=H/3.    ! *** see Simpthon's Rule for Wavenumber Integration
-IF(I>1.AND.I<NTH)THEN
- IF(I/2*2==I)THEN
- WES=WES*4.
- ELSE
- WES=WES*2.
- END IF
-END IF
+        WES=H/3.    ! *** see Simpthon's Rule for Wavenumber Integration
+        IF(I>1.AND.I<NTH)THEN
+            IF(I/2*2==I)THEN
+                WES=WES*4.
+            ELSE
+                WES=WES*2.
+            END IF
+        END IF
 ! --------------------------------!
 
-V=VA+H*(I-1) ! Wavenumber Point
-SOL=SUN(V)   ! Solar Irradience (R_Earth/R_Venus)**2 = (150E6/108E6 km)**2
-! --- Taking into accaunt Sun-Venus distance -----
-sum=sum+sol*h     ! Primitiv calculation of the Solar Flux in (V1,V2)
-A_COEF=UV_Absorption(V)  ! ***   Absorption (see FUNCTION UV_H2O,FUNCTION UV_CO2,etc.)
+        V=VA+H*(I-1) ! *** Wavenumber Point
+        SOL=SUN(V)   ! *** Solar Irradiance (R_Earth/R_Venus)**2 = (150E6/108E6 km)**2
+        sum=sum+sol*h     ! *** Primitive calculation of the Solar Flux in (V1,V2)
+        A_COEF=UV_Absorption(V)  ! ***   Absorption (see FUNCTION UV_H2O,FUNCTION UV_CO2,etc.)
 
 ! *** TAU-matrix *** !
-TAUMA=0.
-DO J=JMAX1,1,-1
-TAUMA(J)=TAUMA(J+1)+A_COEF*0.5*(RO(J+1)+RO(J))*(Z(J+1)-Z(J)) !### Spectral Optical Depth
-END DO
+        TAUMA=0.
+        DO J=JMAX1,1,-1
+            TAUMA(J)=TAUMA(J+1)+A_COEF*0.5*(RO(J+1)+RO(J))*(Z(J+1)-Z(J)) !*** Spectral Optical Depth
+        END DO
 
 ! *** DOWNWARD & UPWARD FLUXES *** !
-DO N=1,NAGL
-   SO=SOL*CANGLE(N)
-   DO J=1,JMAX   ! *** DOWNWARD
-FDO(J,N)=FDO(J,N)+WES*SO*EXP(-TAUMA(J)/CANGLE(N)) ! DONWARD  FLUXES at the V-point
+        DO N=1,NAGL
+            SO=SOL*CANGLE(N)
+            DO J=1,JMAX   ! *** DOWNWARD
+                FDO(J,N)=FDO(J,N)+WES*SO*EXP(-TAUMA(J)/CANGLE(N)) ! DONWARD  FLUXES at the V-point
 !### Attention: sum with WES for the wavenumber integration!
-   END DO
+            END DO
 
-   F0=WES*SO*EXP(-TAUMA(1)/CANGLE(N)) ! Donward Intensity at the atmospheric bottom
-   DO J=1,JMAX   ! *** UPWARD
-FUP(J,N)=FUP(J,N)+ALBEDO*F0*EXP(-1.66*(TAUMA(1)-TAUMA(J))) ! UPWARD  FLUXES at the V-point
- !!!    ************   Attention: DIFFUSIVE  COEFFICIENT= 1.66   *********** !!!
-   END DO
-END DO
-END DO  ! V-Loop
+            F0=WES*SO*EXP(-TAUMA(1)/CANGLE(N)) !*** Donward Intensity at the atmospheric bottom
+            DO J=1,JMAX   ! *** UPWARD
+                FUP(J,N)=FUP(J,N)+ALBEDO*F0*EXP(-1.66*(TAUMA(1)-TAUMA(J))) ! UPWARD  FLUXES at the V-point
+            END DO
+        END DO
+    END DO  ! V-Loop
 !================================!
 
-FLUXUP=FLUXUP+FUP ; FLUXDO=FLUXDO+FDO  ! To obtain fluxes at the whole (V1,V2).
+    FLUXUP=FLUXUP+FUP ; FLUXDO=FLUXDO+FDO  ! To obtain fluxes at the whole (V1,V2).
 
-IF(VB+1.0>V2)EXIT
-WRITE(*,*)VA,VB
+    IF(VB+1.0>V2)EXIT
+    WRITE(*,*)VA,VB
+
 END DO   ! K- Loop
 WRITE(*,*)'*** Finish !!! ***'
 
-write(11,*)sum  ! *** ~ Solar Flux in (V1,V2) (for control)
+WRITE(11,*)sum  ! *** ~ Solar Flux in (V1,V2) (for control)
+
 DO J=JMAX,1,-1
-WRITE(11,3)Z(J),FLUXDO(J,:),FLUXUP(J,:) ! Printing in 'Result_'//ATM Z and Fluxes
+    WRITE(11,3)Z(J),FLUXDO(J,:),FLUXUP(J,:) ! Printing in 'Result_'//ATM Z and Fluxes
 END DO
 3 FORMAT(F7.1,10E12.4)
 
@@ -110,51 +112,54 @@ END DO
 ! ----------------- FINAL PART OF THE PROGRAM --------------------------- !
 !*** All values are defined at the (Z(j-1)+Z(j))/2.0 , (j=2,3,...,JMAX).
 
-! *** Calc. for the first Zenith Angle ***
+! *** Calculation for the first zenith Angle ***
 OPEN(21,FILE='K_FDO_FUP_FUPKD.00deg')
 ! *** printed values in file:
 ! Zj km, SUMROj mol/cm**2 , DONWARD and UPWARD Fluxes wt/m**2 ('Exact' and 'Approximate')
 !***
 N=1
 DO J=2,JMAX
-ROS=(SUMRO(J-1)-SUMRO(J))/CANGLE(N)
-SIGMA=((TAUMA_EF(J-1,N)-TAUMA_EF(J,N))/CANGLE(N))/ROS
-WRITE(21,4)(Z(J)+Z(J-1))/2.,(SUMRO(J)+SUMRO(J-1))/2./CANGLE(N),SIGMA, &
-(FLUXDO(J,N)+FLUXDO(J-1,N))/2.,(FLUXUP(J,N)+FLUXUP(J-1,N))/2.,(FUP(J,N)+FUP(J-1,N))/2.
+    ROS=(SUMRO(J-1)-SUMRO(J))/CANGLE(N)
+    SIGMA=((TAUMA_EF(J-1,N)-TAUMA_EF(J,N))/CANGLE(N))/ROS
+    WRITE(21,4)(Z(J)+Z(J-1))/2.,(SUMRO(J)+SUMRO(J-1))/2./CANGLE(N),SIGMA, &
+    (FLUXDO(J,N)+FLUXDO(J-1,N))/2.,(FLUXUP(J,N)+FLUXUP(J-1,N))/2.,(FUP(J,N)+FUP(J-1,N))/2.
 END DO
 CLOSE(21)
 
-! *** Calc. for the second Zenith Angle ***
+! *** Calculation for the second zenith Angle ***
 OPEN(21,FILE='K_FDO_FUP_FUPKD.75deg')
-! *** printed values as for the first zenith angle ***
 N=2
 DO J=2,JMAX
-ROS=(SUMRO(J-1)-SUMRO(J))/CANGLE(N)
-SIGMA=((TAUMA_EF(J-1,N)-TAUMA_EF(J,N))/CANGLE(N))/ROS
-WRITE(21,4)(Z(J)+Z(J-1))/2.,(SUMRO(J)+SUMRO(J-1))/2./CANGLE(N),SIGMA, &
-(FLUXDO(J,N)+FLUXDO(J-1,N))/2.,(FLUXUP(J,N)+FLUXUP(J-1,N))/2.,(FUP(J,N)+FUP(J-1,N))/2.
+    ROS=(SUMRO(J-1)-SUMRO(J))/CANGLE(N)
+    SIGMA=((TAUMA_EF(J-1,N)-TAUMA_EF(J,N))/CANGLE(N))/ROS
+    WRITE(21,4)(Z(J)+Z(J-1))/2.,(SUMRO(J)+SUMRO(J-1))/2./CANGLE(N),SIGMA, &
+        (FLUXDO(J,N)+FLUXDO(J-1,N))/2.,(FLUXUP(J,N)+FLUXUP(J-1,N))/2.,(FUP(J,N)+FUP(J-1,N))/2.
 END DO
 CLOSE(21)
+
 4 FORMAT(F7.1,2X,E12.4,3X,E15.5,3E12.4)
 
 !*** Heating Rates calculations *** !
 DO N=1,NAGL
-DO J=2,JMAX
-EF1=FLUXDO(J,N)-FLUXUP(J,N) ; EF2=FLUXDO(J-1,N)-FLUXUP(J-1,N)
-Qex(J,N)=(EF2-EF1)/(P(J)-P(J-1))*CP_CONST/1013.25
-EF1=FLUXDO(J,N)-FUP(J,N) ; EF2=FLUXDO(J-1,N)-FUP(J-1,N)
-Qap(J,N)=(EF2-EF1)/(P(J)-P(J-1))*CP_CONST/1013.25
-END DO
-Qex(1,N)=Qex(2,N) ; Qap(1,N)=Qap(2,N)
+    DO J=2,JMAX
+        EF1=FLUXDO(J,N)-FLUXUP(J,N) ; EF2=FLUXDO(J-1,N)-FLUXUP(J-1,N)
+        Qex(J,N)=(EF2-EF1)/(P(J)-P(J-1))*CP_CONST/1013.25
+
+        EF1=FLUXDO(J,N)-FUP(J,N) ; EF2=FLUXDO(J-1,N)-FUP(J-1,N)
+
+        Qap(J,N)=(EF2-EF1)/(P(J)-P(J-1))*CP_CONST/1013.25
+    END DO
+    Qex(1,N)=Qex(2,N) ; Qap(1,N)=Qap(2,N)
 END DO
 
 !*** Fluxes and Heating Rates printing *** !
 OPEN(21,FILE='FDO_FUPex_FUPap_Qex_Qap.A&B')
+
 DO J=1,JMAX
-WRITE(21,5)Z(J),FLUXDO(J,1),FLUXUP(J,1),FUP(J,1),Qex(J,1),Qap(J,1) &
-,FLUXDO(J,2),FLUXUP(J,2),FUP(J,2),Qex(J,2),Qap(J,2)
-!***
+    WRITE(21,5)Z(J),FLUXDO(J,1),FLUXUP(J,1),FUP(J,1),Qex(J,1),Qap(J,1) &
+        ,FLUXDO(J,2),FLUXUP(J,2),FUP(J,2),Qex(J,2),Qap(J,2)
 END DO
+
 5 FORMAT(F6.1,3E12.4,2E11.3,3E12.4,2E11.3)
 
 CLOSE(21)
@@ -181,7 +186,7 @@ CLOSE(21)
 END
 
 SUBROUTINE  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES)
-CHARACTER ATM_PATH*100, ATM_NAME*120, GAS_NAME*4, RES*20
+CHARACTER ATM_PATH*100, ATM_NAME*120, GAS_NAME*4, RES*50
 REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
 
  ! --- Reading input data from file Initial.dat--- !
@@ -208,7 +213,7 @@ REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
     END DO
 
     READ(99,947)RES
-    947 FORMAT(A20)
+    947 FORMAT(A50)
 
 	CLOSE(99) ! *** closing file Initial.dat ***
 !--------------------------------------------------!
