@@ -3,5 +3,5 @@
 ./Atmosph_Models/co2_gas_profile_50km.dat                                !   FileName for Atmospher&Result
 2                                                                        ! Number  SZA
 0.0 75.0                                                                 ! Standard SZA
-CALC_FLUXDO_FLUXUP_ANGLES.dat                                            ! File-Name  for CALC.
+FDO_ANGLES_FUP.dat                                                       ! File-Name  for CALC.
 

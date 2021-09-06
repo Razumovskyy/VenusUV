@@ -79,19 +79,19 @@ DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
     IF(VB+1.0>V2)EXIT
     WRITE(*,*)VA,VB
 
-END DO   ! K- Loop
+END DO   ! *** End of the loop over whole (V1, V2) interval. V1=50000, V2=80000 cm^-1
 WRITE(*,*)'*** Finish !!! ***'
 
-WRITE(11,*)sum  ! *** ~ Solar Flux in (V1,V2) (for control)
+WRITE(11,*)sum  ! *** Printing to RES=FDO_ANGLES_FUP approximate Solar Flux in (V1,V2) (for control)
 
 DO J=JMAX,1,-1
-    WRITE(11,3)Z(J),FLUXDO(J,:),FLUXUP(J,:) ! Printing in 'Result_'//ATM Z and Fluxes
+    WRITE(11,3)Z(J),FLUXDO(J,:),FLUXUP(J,:) ! *** Printing to RES=FDO_ANGLES_FUP results for exact fluxes profiles!
 END DO
 3 FORMAT(F7.1,10E12.4)
 
 ! =================== PART II - Cross Sections Profiles from   FLUXDO(J,:) ===== !
 
-! *** total TAUMA *** !
+! *** total TAUMA *** ! ---- calculation of effective optical depth over whole interval
 DO J=1,JMAX
   DO N=1,NAGL
   ddtt=FLUXDO(J,N)/FLUXDO(JMAX,N)
@@ -113,7 +113,7 @@ END DO
 !*** All values are defined at the (Z(j-1)+Z(j))/2.0 , (j=2,3,...,JMAX).
 
 ! *** Calculation for the first zenith Angle ***
-OPEN(21,FILE='K_FDO_FUP_FUPKD.00deg')
+OPEN(21,FILE='MOL_SIGMA_FDO_FUP_FUPKD_1ANGLE.dat')
 ! *** printed values in file:
 ! Zj km, SUMROj mol/cm**2 , DONWARD and UPWARD Fluxes wt/m**2 ('Exact' and 'Approximate')
 !***
@@ -127,7 +127,7 @@ END DO
 CLOSE(21)
 
 ! *** Calculation for the second zenith Angle ***
-OPEN(21,FILE='K_FDO_FUP_FUPKD.75deg')
+OPEN(21,FILE='MOL_SIGMA_FDO_FUP_FUPap_2ANGLE.dat')
 N=2
 DO J=2,JMAX
     ROS=(SUMRO(J-1)-SUMRO(J))/CANGLE(N)
@@ -153,7 +153,7 @@ DO N=1,NAGL
 END DO
 
 !*** Fluxes and Heating Rates printing *** !
-OPEN(21,FILE='FDO_FUPex_FUPap_Qex_Qap.A&B')
+OPEN(21,FILE='FDO_FUP_FUPap_Q_Qap_ANGLES.dat')
 
 DO J=1,JMAX
     WRITE(21,5)Z(J),FLUXDO(J,1),FLUXUP(J,1),FUP(J,1),Qex(J,1),Qap(J,1) &
@@ -191,14 +191,14 @@ REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
 
  ! --- Reading input data from file Initial.dat--- !
 
-    OPEN(66,FILE='Check-inform.dat') ! *** here would be printed gas profile from ATM_PATH - for control *** !
+    !OPEN(66,FILE='Check-inform.dat') ! *** here would be printed gas profile from ATM_PATH - for control *** !
 	OPEN(99,FILE='Initial.dat')
 	READ(99,*)V1,V2
 	READ(99,*)ALBEDO
 
 	READ(99,98)ATM_PATH  ! *** extract path to gas profile *** !
     98 FORMAT(A50)
-    WRITE(66,*)' The atmospheric conditions from file = ',ATM_PATH
+    !WRITE(66,*)' The atmospheric conditions from file = ',ATM_PATH
 
     READ(99,*)NAG
 
@@ -233,16 +233,16 @@ REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
     WRITE(*,*)GAS_NAME ! *** printing gas name (CO2) before calculations - for control ***
     WRITE(*,*)ATM_NAME ! *** printing source of mixing ratio profile and VIRA atmospheric file before calculations- for control ***
 
-    WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat ***
+    !WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat ***
 	DO J=1,JMAX
 	READ(55,*)Z(J),P(J),T(J),RO(J)  ! Altitude, Pressure (total), Temperature and Concentration of gas
-	WRITE(66,*)J,Z(J),P(J),T(J),RO(J)
-	END DO                                                    ! *** end optional printing to Check-inform.dat ***
+	!WRITE(66,*)J,Z(J),P(J),T(J),RO(J)
+	END DO                                                    ! *** end reading gas profile ***
 
     CLOSE(55) ! *** closing file with gas profile ***
-    CLOSE(66) ! *** closing Check-inform file ***
+    !CLOSE(66) ! *** closing Check-inform file ***
 
-!---- Calculation of Molecules along the Solar Ray in  mol/(cm*cm) --- !
+!---- Calculation of Molecules along the Solar Ray in  mol/(cm*cm) --- for 0 deg zenith angle!
 
 	SUMRO(JMAX)=0.
 	DO J=JMAX,2,-1

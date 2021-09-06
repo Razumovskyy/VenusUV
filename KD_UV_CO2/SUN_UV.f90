@@ -9,7 +9,7 @@ FUNCTION SUN(V)
     IF(IBG==-1)THEN
         IBG=1
 
-        OPEN(10457,FILE='UV-name')
+        OPEN(10457,FILE='UV-name.txt')
         READ(10457,1)UVNAME
         1 FORMAT(A70)
         CLOSE(10457)

@@ -24,13 +24,16 @@ gases_names = ["CO2/co2.hq", "H2O/h2o.hq", "CO/co.hq", "SO2/so2.hq", "OCS/ocs.hq
 #i = 0 # 0-CO2, 1-H2O, 2-CO, 3-SO2, 4-OCS, 5-HF, 6-HCl
 
 for p in gases_names:
+    p = gases_names[0]
     f = "./Atmosph_Models/" + p
     pp = p.split('/')[0]
+    print (pp)
     ppp = pp.split('.')[0]
+    print (ppp)
     height, mixratio = np.loadtxt (f, skiprows=1, unpack=True)
 
-        #print (height)
-        #print (mixratio)
+    #print (height)
+    #print (mixratio)
 
     mix_rat = interp1d(height, mixratio)
     
@@ -40,17 +43,17 @@ for p in gases_names:
     gas_t = vira_temperature #temperature
     gas_c = mix_rat(gas_h)*1e-6*vira_concentration*1e5 #concentration
     
-    save_file = "./Atmosph_Models/"+ pp + "/" + ppp + "_gas_profile.dat"
+    save_file = "./Atmosph_Models/"+ pp + "/" + ppp + "_gas_profile_my.dat"
     header =  "Haus2015\n" + str(len(gas_h)) + "\n" + pp + " #height(km), pressure(atm), temperature(K), concentration (molecules/cm^2*km)"
         
     np.savetxt (save_file, np.transpose ((gas_h, gas_p, gas_t, gas_c)), header=header, delimiter='  ', comments='', fmt=fmt)
         
-    index60 = np.where(gas_h==60.)[0][0]
+    index50 = np.where(gas_h==50.)[0][0]
         
-    save_file60 = "./Atmosph_Models/"+ pp + "/" + ppp + "_gas_profile_60km.dat"
-    header60 = "Haus2015\n" + str(len(gas_h[index60:])) + "\n" + pp + " #height(km), pressure(atm), temperature(K), concentration (molecules/cm^2*km)"
-    np.savetxt (save_file60, np.transpose((gas_h[index60:], gas_p[index60:], gas_t[index60:], gas_c[index60:])), header=header60, delimiter='  ', comments='', fmt=fmt)
-        
+    save_file50 = "./Atmosph_Models/"+ pp + "/" + ppp + "_gas_profile_50km.dat"
+    header50 = "Haus2015\n" + str(len(gas_h[index50:])) + "\n" + pp + " #height(km), pressure(atm), temperature(K), concentration (molecules/cm^2*km)"
+    np.savetxt (save_file50, np.transpose((gas_h[index50:], gas_p[index50:], gas_t[index50:], gas_c[index50:])), header=header50, delimiter='  ', comments='', fmt=fmt)
+    break    
         
 #x = np.linspace(0, 100, num=85, endpoint=True) #vary right border to 80 or 100 km if error
 #plt.plot(mixratio, height, 'o', mix_rat(x), x, '-')
