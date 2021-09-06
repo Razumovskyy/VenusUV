@@ -23,6 +23,8 @@ vira_height, vira_concentration, vira_temperature, vira_pressure = np.loadtxt (v
 gases_names = ["CO2/co2.hq", "H2O/h2o.hq", "CO/co.hq", "SO2/so2.hq", "OCS/ocs.hq", "HF/hf.hq", "HCl/hcl.hq"]
 #i = 0 # 0-CO2, 1-H2O, 2-CO, 3-SO2, 4-OCS, 5-HF, 6-HCl
 
+cloud_height = 70.
+
 for p in gases_names:
     p = gases_names[0]
     f = "./Atmosph_Models/" + p
@@ -51,14 +53,16 @@ for p in gases_names:
         
     np.savetxt (save_file, np.transpose ((gas_h, gas_p, gas_t, gas_c)), header=header, delimiter='  ', comments='', fmt=fmt)
         
-    index50 = np.where(gas_h==50.)[0][0]
+    index_cloud = np.where(gas_h==cloud_height)[0][0]
         
-    save_file50 = "./Atmosph_Models/" + ppp + "_gas_profile_50km.dat"
-    header50 = gas_mix_ratio_source + vira_file_source + str(1) + "   "\
-        + str(len(gas_h[index50:])) + "\n" + pp\
+    save_file_cloud = "./Atmosph_Models/" + ppp + "_gas_profile_"+ str(int(cloud_height)) + "km.dat"
+    header_cloud = gas_mix_ratio_source + vira_file_source + str(1) + "   "\
+        + str(len(gas_h[index_cloud:])) + "\n" + pp\
         + " #height(km), pressure(atm), temperature(K), concentration (molecules/cm^2*km)"
     
-    np.savetxt (save_file50, np.transpose((gas_h[index50:], gas_p[index50:], gas_t[index50:], gas_c[index50:])), header=header50, delimiter='  ', comments='', fmt=fmt)
+    np.savetxt (save_file_cloud, np.transpose((gas_h[index_cloud:], gas_p[index_cloud:], 
+                                               gas_t[index_cloud:], gas_c[index_cloud:])), 
+                header=header_cloud, delimiter='  ', comments='', fmt=fmt)
     break    
         
 #x = np.linspace(0, 100, num=85, endpoint=True) #vary right border to 80 or 100 km if error
