@@ -31,7 +31,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.f90" />
+		<Unit filename="SUN_UV.f90" />
+		<Unit filename="UV_C02.f90" />
+		<Unit filename="UV_for_KD_CO2_.f90" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
