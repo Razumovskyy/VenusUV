@@ -31,7 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="KD_CO2.f90" />
+		<Unit filename="KD_CO2_UPWARD.f90" />
 		<Unit filename="SUN_UV.f90" />
 		<Unit filename="UV_C02.f90" />
 		<Extensions />

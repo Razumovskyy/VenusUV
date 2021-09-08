@@ -1,9 +1,9 @@
-character aaa*6
+!character aaa*6
 DIMENSION SK(333),CRS(333)
 
-aaa='.00deg'
-open(10,file='K_FDO_.00deg')
-open(11,file='Cr-Sect'//aaa)
+!aaa='.00deg'
+open(10,file='MOLS_SIGMA_FDO_1ANGLE.dat')
+open(11,file='Cr-Sect_1ANGLE.dat')
 
 ! ***  the first filter: removing lines that correspond to equal and small (more likely zero) downward fluxes !
 
@@ -41,9 +41,9 @@ write(*,*)'  ***  0-degrees DATA IS ready *** ',N
 close(11)
 
 ! ---------------------------------------------------- !
-aaa='.75deg'
-open(10,file='K_FDO_.75deg')
-open(11,file='Cr-Sect'//aaa)
+!aaa='.75deg'
+open(10,file='MOLS_SIGMA_FDO_1ANGLE.dat')
+open(11,file='Cr-Sect_2ANGLE.dat')
 
 ! ***  the first filter ***  !
 read(10,*)Z,SK(1),CRS(1),FKO
@@ -57,7 +57,6 @@ FKO=FKN
 ! ***  the SECOND filter ***  !
 IMP=IMIN+1
 
-PAUSE
 do I=IMP,9999
 read(10,*)Z,SK(I),CRS(I),FKN
 IF(FKN==FKO)EXIT

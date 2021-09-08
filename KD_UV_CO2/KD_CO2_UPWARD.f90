@@ -61,16 +61,16 @@ DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
 ! *** DOWNWARD & UPWARD FLUXES *** !
         DO N=1,NAGL
             SO=SOL*CANGLE(N)
-            DO J=1,JMAX   ! *** DOWNWARD
-                FDO(J,N)=FDO(J,N)+WES*SO*EXP(-TAUMA(J)/CANGLE(N)) ! DONWARD  FLUXES at the V-point
-!### Attention: sum with WES for the wavenumber integration!
+            DO J=1,JMAX
+                FDO(J,N)=FDO(J,N)+WES*SO*EXP(-TAUMA(J)/CANGLE(N))          ! *** DONWARD  FLUXES at the V-point. Attention: sum with WES for the wavenumber integration!
             END DO
 
-            F0=WES*SO*EXP(-TAUMA(1)/CANGLE(N)) !*** Donward Intensity at the atmospheric bottom
-            DO J=1,JMAX   ! *** UPWARD
-                FUP(J,N)=FUP(J,N)+ALBEDO*F0*EXP(-1.66*(TAUMA(1)-TAUMA(J))) ! UPWARD  FLUXES at the V-point
+            F0=WES*SO*EXP(-TAUMA(1)/CANGLE(N))                             !*** Donward Intensity at the atmospheric bottom
+            DO J=1,JMAX
+                FUP(J,N)=FUP(J,N)+ALBEDO*F0*EXP(-1.66*(TAUMA(1)-TAUMA(J))) ! *** UPWARD  FLUXES at the V-point
             END DO
         END DO
+
     END DO  ! V-Loop
 !================================!
 
@@ -83,7 +83,6 @@ END DO   ! *** End of the loop over whole (V1, V2) interval. V1=50000, V2=80000 
 WRITE(*,*)'*** Finish !!! ***'
 
 WRITE(11,*)sum  ! *** Printing to RES=FDO_ANGLES_FUP approximate Solar Flux in (V1,V2) (for control)
-
 DO J=JMAX,1,-1
     WRITE(11,3)Z(J),FLUXDO(J,:),FLUXUP(J,:) ! *** Printing to RES=FDO_ANGLES_FUP results for exact fluxes profiles!
 END DO
@@ -113,7 +112,7 @@ END DO
 !*** All values are defined at the (Z(j-1)+Z(j))/2.0 , (j=2,3,...,JMAX).
 
 ! *** Calculation for the first zenith Angle ***
-OPEN(21,FILE='MOL_SIGMA_FDO_FUP_FUPKD_1ANGLE.dat')
+OPEN(21,FILE='MOL_SIGMA_FDO_FUP_FUPap_1ANGLE.dat')
 ! *** printed values in file:
 ! Zj km, SUMROj mol/cm**2 , DONWARD and UPWARD Fluxes wt/m**2 ('Exact' and 'Approximate')
 !***
@@ -209,13 +208,13 @@ REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
     READ(99,*)ANGLE
 
     DO N=1,NAG
-        CANGLE(N)=COS(ANGLE(N)*3.1416/180.0) ! *** creating array with cos of set zenith angles ***
+        CANGLE(N)=COS(ANGLE(N)*3.1416/180.0) ! *** creating array with cos of set zenith angles
     END DO
 
     READ(99,947)RES
     947 FORMAT(A50)
 
-	CLOSE(99) ! *** closing file Initial.dat ***
+	CLOSE(99) ! *** closing file Initial.dat
 !--------------------------------------------------!
 
 ! --- Reading information about Atmosphere in FILE=ATM_PATH --- !
@@ -231,22 +230,22 @@ REAL*4 Z(J200), P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200), T(J200)
     READ(55,456)GAS_NAME
 
     WRITE(*,*)GAS_NAME ! *** printing gas name (CO2) before calculations - for control ***
-    WRITE(*,*)ATM_NAME ! *** printing source of mixing ratio profile and VIRA atmospheric file before calculations- for control ***
+    WRITE(*,*)ATM_NAME ! *** printing source of mixing ratio profile and VIRA atmospheric file before calculations- for control
 
-    !WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat ***
+    !WRITE(66,*)GAS_NAME,'The number of levels (JMAX) : ',JMAX ! *** start optional printing to Check-inform.dat
 	DO J=1,JMAX
 	READ(55,*)Z(J),P(J),T(J),RO(J)  ! Altitude, Pressure (total), Temperature and Concentration of gas
 	!WRITE(66,*)J,Z(J),P(J),T(J),RO(J)
 	END DO                                                    ! *** end reading gas profile ***
 
-    CLOSE(55) ! *** closing file with gas profile ***
-    !CLOSE(66) ! *** closing Check-inform file ***
+    CLOSE(55) ! *** closing file with gas profile
+    !CLOSE(66) ! *** closing Check-inform file
 
 !---- Calculation of Molecules along the Solar Ray in  mol/(cm*cm) --- for 0 deg zenith angle!
 
 	SUMRO(JMAX)=0.
 	DO J=JMAX,2,-1
-	SUMRO(J-1)=SUMRO(J)+0.5*(RO(J)+RO(J-1))*(Z(J)-Z(J-1))
+        SUMRO(J-1)=SUMRO(J)+0.5*(RO(J)+RO(J-1))*(Z(J)-Z(J-1))
 	END DO
 
 !-----------------------------------------------------------------------!
