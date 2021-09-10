@@ -30,15 +30,11 @@ II. Scientific part: explanation of underlying theory, models description, links
 - codeblocks (preferable) with GNU Fortran Compiler - to run existing .cbp project, otherwise you need manually add files and create project in other IDE.
 - Python 3.8 (or may be lower, but not Python 2) for running auxilary scripts.
 
-## Description of directories
-
--  All the files except Readme.md and License are located in **./venus_uv_prj**
--  Directory **./venus_uv_prj/Solar_Irradiance** contains data files with solar spectral irradiances from various sources.
--  Directory **./venus_uv_prj/Atmosph_Models** contains data files with atmospheric profiles: temperature, pressure, density. The data encompasses individual gaseous features as well as cumulative features from VIRA (Venus International Reference Atmosphere).
+## Instructions
 
 ## File formats
 
-## Examples and some results
+## Examples
 
 # II. Scientific section
 
