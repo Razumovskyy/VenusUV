@@ -3,5 +3,5 @@
 ./Atmosph_Models/co2_gas_profile_60km.dat                                !   FileName for Atmospher&Result
 2                                                                        ! Number  SZA
 0.0 75.0                                                                 ! Standard SZA
-CHECK_FLUXES.dat                                                       ! File-Name  for CALC.
+FLUXES_CHECK.dat                                                       ! File-Name  for CALC.
 

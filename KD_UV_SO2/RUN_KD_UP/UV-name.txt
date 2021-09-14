@@ -1,0 +1,1 @@
+./Solar_Irradiance/cosi_full_1nm_max.txt                                                  
