@@ -16,18 +16,18 @@ import numpy as np
 fmt = '%1.1f', '%1.5e', '%1.1f', '%1.5e'
 
 
-vira_file = "./Atmosph_Models/VIRA/" + "venus_seiff1983_mdlAtm_00N0000.dat"
+vira_file = "./RUN_KD_UP/Atmosph_Models/VIRA/" + "venus_seiff1983_mdlAtm_00N0000.dat"
 vira_height, vira_concentration, vira_temperature, vira_pressure = np.loadtxt (vira_file, skiprows=2, unpack=True)
 
 #Available gases in ./Atmosph_Models directory are: CO2, H2O, CO, SO2, OCS, HF, HCl, O2, H2S
 gases_names = ["CO2/co2.hq", "H2O/h2o.hq", "CO/co.hq", "SO2/so2.hq", "OCS/ocs.hq", "HF/hf.hq", "HCl/hcl.hq"]
 #i = 0 # 0-CO2, 1-H2O, 2-CO, 3-SO2, 4-OCS, 5-HF, 6-HCl
 
-cloud_height = 70.
+cloud_height = 50.
 
 for p in gases_names:
-    p = gases_names[0]
-    f = "./Atmosph_Models/" + p
+    p = gases_names[3]
+    f = "./RUN_KD_UP/Atmosph_Models/" + p
     pp = p.split('/')[0]
     ppp = (p.split('/')[1]).split('.')[0]
     height, mixratio = np.loadtxt (f, skiprows=1, unpack=True)
@@ -46,7 +46,7 @@ for p in gases_names:
     gas_mix_ratio_source = pp + " mixing ratio is taken from Haus2015."
     vira_file_source = " VIRA file: " + vira_file + "\n"
     
-    save_file = "./Atmosph_Models/"+ ppp + "_gas_profile.dat"
+    save_file = "./RUN_KD_UP/Atmosph_Models/"+ ppp + "_gas_profile.dat"
     header =  gas_mix_ratio_source + vira_file_source + str(1) + "  "\
         + str(len(gas_h)) + "\n" + pp\
         + " #height(km), pressure(atm), temperature(K), concentration (molecules/cm^2*km)"
@@ -55,7 +55,7 @@ for p in gases_names:
         
     index_cloud = np.where(gas_h==cloud_height)[0][0]
         
-    save_file_cloud = "./Atmosph_Models/" + ppp + "_gas_profile_"+ str(int(cloud_height)) + "km.dat"
+    save_file_cloud = "./RUN_KD_UP/Atmosph_Models/" + ppp + "_gas_profile_"+ str(int(cloud_height)) + "km.dat"
     header_cloud = gas_mix_ratio_source + vira_file_source + str(1) + "   "\
         + str(len(gas_h[index_cloud:])) + "\n" + pp\
         + " #height(km), pressure(atm), temperature(K), concentration (molecules/cm^2*km)"

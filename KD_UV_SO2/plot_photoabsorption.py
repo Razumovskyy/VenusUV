@@ -10,7 +10,7 @@ template for plot from binary file
 import matplotlib.pyplot as plt
 import numpy as np
 
-path0 = "./UV_absorption/CO2/"
+path0 = "./RUN_KD_DO/UV_absorption/"
 
 def acs_read(dat_path):
     
@@ -37,43 +37,28 @@ def acs_read(dat_path):
               
 def uv_acs_plot_nm():
     
-    #plt.plot(acs_read(path0+"CO2_Bastien1985.dat")[0], acs_read(path0+"CO2_Bastien1985.dat")[1], color='r', label='Bastien1985')
-    plt.plot(acs_read(path0+"CO2_Kuo2004.dat")[0], acs_read(path0+"CO2_Kuo2004.dat")[1], color='b', label='Kuo2004')
-    #plt.plot(acs_read(path0+"CO2_LewisCarver1983.dat")[0], acs_read(path0+"CO2_LewisCarver1983.dat")[1], color='c', label='LewisCarver1983')
-    #plt.plot(acs_read(path0+"CO2_Inn1953.dat")[0], acs_read(path0+"CO2_Inn1953.dat")[1], color='g', label='Inn1953')
-    #plt.plot(acs_read(path0+"CO2_Rabalais1971.dat")[0], acs_read(path0+"CO2_Rabalais1971.dat")[1], color='m', label='Rabalais1971')
-    #plt.plot(acs_read(path0+"CO2_Watanabe1953.dat")[0], acs_read(path0+"CO2_Watanabe1953.dat")[1], color='y', label='Watanabe1953')
-    plt.plot(acs_read(path0+"CO2_Yoshino1996.dat")[0], acs_read(path0+"CO2_Yoshino1996.dat")[1], color='k', label='Yoshino1996')
-    plt.plot(acs_read(path0+"CO2_Parkinson2003.dat")[0], acs_read(path0+"CO2_Parkinson2003.dat")[1], color='r', label='Parkinson2003')
-    plt.plot(acs_read(path0+"CO2_Shemansky1972.dat")[0], acs_read(path0+"CO2_Shemansky1972.dat")[1], color='y', label='Shemansky1972')
+    plt.plot(acs_read(path0+"SO2_ManattLane1993.dat")[0], acs_read(path0+"SO2_ManattLane1993.dat")[1], color='b', label='ManattLane1993')
 
-
-    plt.xlim([120, 300])
+    plt.xlim([200, 400])
+    plt.grid(color='g', linestyle='-', linewidth=0.5)
     plt.yscale('log')
-    plt.xlabel ("wavelength, nm")
+    plt.xlabel ("wavelength [nm]")
     plt.ylabel ("ACS [cm^2/molec]")
-    plt.title ("CO2 photoabsorption cross section")
+    plt.title ("SO2 photoabsorption cross section")
     plt.legend()
     plt.show()    
 
 def uv_acs_plot_wavenum():    
         
-    #plt.plot(acs_read(path0+"CO2_Bastien1985.dat")[0], acs_read(path0+"CO2_Bastien1985.dat")[1], color='r', label='Bastien1985')
-    plt.plot(1e7/acs_read(path0+"CO2_Kuo2004.dat")[0], acs_read(path0+"CO2_Kuo2004.dat")[1], color='b', label='Kuo2004')
-    #plt.plot(acs_read(path0+"CO2_LewisCarver1983.dat")[0], acs_read(path0+"CO2_LewisCarver1983.dat")[1], color='c', label='LewisCarver1983')
-    #plt.plot(acs_read(path0+"CO2_Inn1953.dat")[0], acs_read(path0+"CO2_Inn1953.dat")[1], color='g', label='Inn1953')
-    #plt.plot(acs_read(path0+"CO2_Rabalais1971.dat")[0], acs_read(path0+"CO2_Rabalais1971.dat")[1], color='m', label='Rabalais1971')
-    #plt.plot(acs_read(path0+"CO2_Watanabe1953.dat")[0], acs_read(path0+"CO2_Watanabe1953.dat")[1], color='y', label='Watanabe1953')
-    plt.plot(1e7/acs_read(path0+"CO2_Yoshino1996.dat")[0], acs_read(path0+"CO2_Yoshino1996.dat")[1], color='k', label='Yoshino1996')
-    plt.plot(1e7/acs_read(path0+"CO2_Parkinson2003.dat")[0], acs_read(path0+"CO2_Parkinson2003.dat")[1], color='r', label='Parkinson2003')
-    plt.plot(1e7/acs_read(path0+"CO2_Shemansky1972.dat")[0], acs_read(path0+"CO2_Shemansky1972.dat")[1], color='y', label='Shemansky1972')
+    plt.plot(1e7/acs_read(path0+"SO2_ManattLane1993.dat")[0], acs_read(path0+"SO2_ManattLane1993.dat")[1], color='b', label='ManattLane1993')
 
-
-    plt.xlim([48000, 80000])
+    plt.grid(color='g', linestyle='-', linewidth=0.5)
+    plt.xlim([25000, 52000])
+    #plt.ylim([0, 1e-17])
     plt.yscale('log')
-    plt.xlabel ("wavenumber, cm^-1")
+    plt.xlabel ("wavenumber [cm^-1]")
     plt.ylabel ("ACS [cm^2/molec]")
-    plt.title ("CO2 photoabsorption cross section")
+    plt.title ("SO2 photoabsorption cross section")
     plt.legend()
     plt.show()  
 

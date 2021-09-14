@@ -10,7 +10,7 @@ template for plot from binary file
 import matplotlib.pyplot as plt
 import numpy as np
 
-path0 = "./UV_absorption/CO2/"
+path0 = "./RUN_KD_DO/UV_absorption/CO2/"
 
 def acs_read(dat_path):
     
