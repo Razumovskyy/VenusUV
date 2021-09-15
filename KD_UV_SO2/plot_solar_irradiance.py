@@ -10,7 +10,8 @@ import numpy as np
 from scipy.ndimage.filters import gaussian_filter1d
 
 solar_path = "./RUN_KD_UP/Solar_Irradiance/cosi_full_1nm_max.txt"
-sec_path = "./RUN_KD_DO/UV_absorption/SO2_ManattLane1993.dat"
+sec_path = "./RUN_KD_UP/UV_absorption/SO2_ManattLane1993.dat"
+UUV_sec = "./RUN_KD_UP/UV_absorption/UUVA_high_alt_Haus2015.dat"
 
 def acs_read(dat_path):
     
@@ -59,8 +60,10 @@ def uv_acs_plot_wavenum():
     
     fig, ax = plt.subplots()
     ax.semilogy (1e7/acs_read(sec_path)[0], acs_read(sec_path)[1], color='b', label='SO2 ACS from Manattlane1993')
+    ax.semilogy(1e7/acs_read(UUV_sec)[0], acs_read(UUV_sec)[1], color='k', label='UUV Haus2015')
     ax.set_ylabel("Absorption Cross Section [cm^2/molec]")
     ax.set_xlabel("Wavenumber [cm^-1]")
+    ax.set_ylim([1e-24, 1e-7])
     ax.set_xlim([25000, 50000])
     
     ax2 = ax.twinx()

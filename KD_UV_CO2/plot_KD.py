@@ -11,8 +11,8 @@ plot from binary file with many columns
 import matplotlib.pyplot as plt
 import numpy as np
 
-cloud_height = 70 # 50, 54, 60, 64, 70 km
-path = "./Plot/"+ str(cloud_height) +"km_"+"FDO_FUP_FUPap_Q_Qap_ANGLES.dat"
+cloud_height = 60 # 50, 54, 60, 64, 70 km
+path = "./RUN_KD_UP/"+"FDO_FUP_FUPap_Q_Qap_ANGLES.dat"
 
 def FQ_read (path_name):
     
@@ -35,28 +35,28 @@ def FQ_read (path_name):
 z = FQ_read(path)[0]
 z = np.array(z)
 
-FDO = FQ_read(path)[6]
+FDO = FQ_read(path)[1]
 FDO = [float(item) for item in FDO]
 FDO = np.array(FDO)
 #FDO = np.log10(FDO)
 
 
-FUP = FQ_read(path)[7]
+FUP = FQ_read(path)[2]
 FUP = [float(item) for item in FUP]
 FUP = np.array(FUP)
 #FUP = np.log10(FUP)
 
 
-FUPap = FQ_read(path)[8]
+FUPap = FQ_read(path)[3]
 FUPap = [float(item) for item in FUPap]
 FUPap = np.array(FUPap)
 #FUPap = np.log10(FUPap)
 
-Q = FQ_read(path)[9]
+Q = FQ_read(path)[4]
 Q = [float(item) for item in Q]
 Q = np.array(Q)
 
-Qap = FQ_read(path)[10]
+Qap = FQ_read(path)[5]
 Qap = [float(item) for item in Qap]
 Qap = np.array(Qap)
     
@@ -71,7 +71,7 @@ def F_plot():
     #plt.xscale('log')
     plt.xlabel ("Flux, W/m^2")
     plt.ylabel ("z, km")
-    plt.title ("Fluxes. Cloud deck is "+ str(cloud_height) + "km. Zenith angle 75")
+    plt.title ("Fluxes. Cloud deck is "+ str(cloud_height) + "km. Zenith angle 0. CO2 33333-50000 cm^-1")
     plt.legend()
     plt.show() 
 
@@ -90,5 +90,5 @@ def Q_plot():
     plt.legend()
     plt.show() 
     
-#F_plot()    
-Q_plot()
+F_plot()    
+#Q_plot()
