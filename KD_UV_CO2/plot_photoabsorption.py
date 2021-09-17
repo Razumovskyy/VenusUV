@@ -69,7 +69,7 @@ def uv_acs_plot_wavenum():
     plt.plot(1e7/acs_read(path0+"CO2_Shemansky1972.dat")[0], acs_read(path0+"CO2_Shemansky1972.dat")[1], color='y', label='Shemansky1972')
 
 
-    plt.xlim([48000, 80000])
+    plt.xlim([33000, 80000])
     plt.yscale('log')
     plt.xlabel ("wavenumber, cm^-1")
     plt.ylabel ("ACS [cm^2/molec]")

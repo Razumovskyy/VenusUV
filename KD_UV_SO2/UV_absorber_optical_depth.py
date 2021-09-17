@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter1d
 
-x = 1e7/(np.array([280, 300, 320, 350, 400]))
+#x = 1e7/(np.array([280, 300, 320, 350, 400]))
+x = np.array([280, 300, 320, 350, 400])
 y70 = np.log10(np.array([1e-5, 1e-4, 5e-3, 1.5e-2, 8e-3]))
 y60 = np.log10(np.array([2e-5, 2e-4, 1e-2, 4e-2, 1.6e-2]))
 
@@ -19,8 +20,8 @@ y60 = np.log10(np.array([2e-5, 2e-4, 1e-2, 4e-2, 1.6e-2]))
 plt.plot(x, y70, color='b', label='high altitiude mode by Haus2015')
 plt.plot(x, y60, color='r', label='low altitude mode by Haus2015' )
 #plt.yscale('log')
-plt.xlabel('wavenumber, cm^-1')
-plt.xlim([24e3, 36e3])
+plt.xlabel('wavelength, nm')
+plt.xlim([200, 400])
 plt.ylabel('log optical depth')
 plt.title("optical depth of 1 km layer, UV-absorber, height=60 km and 70 km")
 plt.legend()
