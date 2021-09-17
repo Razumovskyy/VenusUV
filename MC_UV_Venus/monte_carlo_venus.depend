@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1631893081 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/SUN_UV_Venus.f90
+
+1247656772 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/MODULE_MESH08shw.f90
+
+1631822834 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/UV_5G.f90
+
+1630427694 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/K_RABMA_UV_2021_5GAS.f90
+
+1630079620 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/M_CARLO_TAU_RaylVenus.f90
+
+1631892380 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/MC_ShW.f90
+
+1631892282 source:/home/taskerbliss/fortran/venus_uv/MC_UV_Venus/UV_ETALON_Monte_Carlo.f90
+

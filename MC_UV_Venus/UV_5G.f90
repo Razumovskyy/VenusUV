@@ -8,7 +8,7 @@ HAG=H0*0.5
 		RK(1)=RK(1)+UV_CO2(VV)*RO
 !* -------------------------- *
 				DO J=1,NT0
-				JJ=1+(J-1)*2     
+				JJ=1+(J-1)*2
                                    RKGP(J,NGR)=RKGP(J,NGR)+UV_CO2(VV)*RO
                                                                VV=VV+HAG
                                    RKG(J,NGR)=RKG(J,NGR)+UV_CO2(VV)*RO
@@ -94,11 +94,12 @@ HAG=H0*0.5
 		END
 ! ----------------------------------------- !
 FUNCTION UV_CO2(WN)
-!***CO2_Parkinson(2003)_295K_163-200nm.txt
-!*** 23870
-!#lambda[nm] sigma [cm2] 
-PARAMETER (NP=23870,BD1=163.37281,BD2=199.98835)
-DIMENSION S(NP),BDA(NP)
+!#lambda[nm] sigma [cm2]
+!##### PARAMETER (NP= 23870,BD1=163.37281,BD2=199.98835)
+PARAMETER (NP= 31767,BD1=124.9965,BD2=300.0)
+ DIMENSION S(NP),BDA(NP)
+ SAVE S
+ SAVE BDA
 DATA NBEG/0/
 IF(NBEG==0)THEN
 NBEG=1
@@ -123,7 +124,7 @@ END
 ! ----------------------------------------- !
 FUNCTION UV_H2O(WN)
 !#JPL 2011
-!#lambda[nm] sigma [1e20 cm2] 
+!#lambda[nm] sigma [1e20 cm2]
 PARAMETER (NP=98,BD1=121.,BD2=198.)
 DIMENSION S(NP),BDA(NP)
 DATA BDA,S/&
@@ -136,7 +137,7 @@ DATA BDA,S/&
   161.0000,  162.0000,  163.0000,  164.0000,  165.0000,  166.0000,  167.0000,  168.0000,  169.0000,  170.0000,&
   171.0000,  172.0000,  173.0000,  174.0000,  175.0000,  176.0000,  177.0000,  178.0000,  179.0000,  180.0000,&
   181.0000,  182.0000,  183.0000,  184.0000,  185.0000,  186.0000,  187.0000,  188.0000,  199.0000,  190.0000,&
-  191.0000,  192.0000,  193.0000,  194.0000,  195.0000,  196.0000,  197.0000,  198.0000,&    
+  191.0000,  192.0000,  193.0000,  194.0000,  195.0000,  196.0000,  197.0000,  198.0000,&
 0.6240E+03,0.1276E+04,0.1480E+04,0.1689E+04,0.8260E+03,0.2830E+03,0.5890E+03,0.1332E+04,0.6630E+03,0.6190E+03,&
 0.6930E+03,0.7060E+03,0.7680E+03,0.8000E+03,0.7800E+03,0.8540E+03,0.8200E+03,0.7770E+03,0.8190E+03,0.7180E+03,&
 0.7330E+03,0.6990E+03,0.6010E+03,0.6670E+03,0.5380E+03,0.4940E+03,0.5130E+03,0.4240E+03,0.3820E+03,0.3670E+03,&
@@ -163,9 +164,11 @@ END
 ! ----------------------------------------- !
 FUNCTION UV_HCL(WN)
 !#HCl_Inn(1975)_298K_140-220nm.txt 27
-!#lambda[nm] sigma [cm2] 
+!#lambda[nm] sigma [cm2]
 PARAMETER (NP=27,BD1=140.0,BD2=220.0)
 DIMENSION S(NP),BDA(NP)
+SAVE S
+SAVE BDA
 DATA NBEG/0/
 IF(NBEG==0)THEN
 NBEG=1
@@ -192,9 +195,11 @@ END
 FUNCTION UV_OCS(WN)
 !#OCS_Molina(1981)_295K_185-300nm(1nm).txt
 ! 116
-!#lambda[nm] sigma [cm2] 
+!#lambda[nm] sigma [cm2]
 PARAMETER (NP=116,BD1=185.0,BD2=300.0)
 DIMENSION S(NP),BDA(NP)
+SAVE S
+SAVE BDA
 DATA NBEG/0/
 IF(NBEG==0)THEN
 NBEG=1
@@ -220,9 +225,11 @@ END
 ! ----------------------------------------- !
 FUNCTION UV_SO2(WN)
 !#SO2_ManattLane(1993)_293K_106.1-403.7nm.txt  2977
-!#lambda[nm] sigma [cm2] 
+!#lambda[nm] sigma [cm2]
 PARAMETER (NP=2977,BD1=106.1,BD2=403.7)
 DIMENSION S(NP),BDA(NP)
+SAVE S
+SAVE BDA
 DATA NBEG/0/
 IF(NBEG==0)THEN
 NBEG=1

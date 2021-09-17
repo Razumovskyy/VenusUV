@@ -16,9 +16,9 @@ REAL*8, ALLOCATABLE :: S_RLGH(:) ! For Rayleigh scattering.  <<<8 Feb., 2009>>>
   USE INITIAL_ShW_CLOUD
    CHARACTER*1 A_ZO
    DIMENSION Z_CL(99) ! MAXimal namber of layers in cloud
-    OPEN(110,FILE='ATM_AEROSOL.MODEL') ! input File - AEROSOL (CLOUD) model 
+    OPEN(110,FILE='ATM_AEROSOL.MODEL') ! input File - AEROSOL (CLOUD) model
     READ(110,*) NLAYER  ! Number of Layers with different Phase Functions
-   NLAY=ABS(NLAYER)   
+   NLAY=ABS(NLAYER)
    READ(110,*)WN5 ! not essential
    READ(110,*)E55 ! not essential
 	  READ(110,*)N_TEC,ZDOW,ZU      ! Boundaries in km
@@ -48,11 +48,12 @@ REAL*8, ALLOCATABLE :: S_RLGH(:) ! For Rayleigh scattering.  <<<8 Feb., 2009>>>
        WRITE(*,*)' CHECK CLOUD/AEROSOL MODEL:',NLAY,ZDOW,ZU
 	   STOP
        END IF
-        
+
 ! -------
         OPEN(66,FILE='k_coef.chk')
 	OPEN(99,FILE='k_coef.in')
 	READ(99,'(A)')ATM_PATH
+        WRITE(*,*)ATM_PATH
 		WRITE(66,*)' The atmospheric conditions from file = ',ATM_PATH
 	READ(99,'(A)')LINE_PATH
 		WRITE(66,*)' The LBL data base from file = ',LINE_PATH
@@ -84,13 +85,13 @@ REAL*8, ALLOCATABLE :: S_RLGH(:) ! For Rayleigh scattering.  <<<8 Feb., 2009>>>
 
 ! Inserting CLOUD into atmospheric model
 ! *************************************************
-             GAS_CLOUD=0.001 ! [KM] (If /Z_CL-Z/ < GAS_CLOUD levels are the same) 
+             GAS_CLOUD=0.001 ! [KM] (If /Z_CL-Z/ < GAS_CLOUD levels are the same)
 			 ICL_MAX=-1 ; ICL_MIN=100000
         DO ICL=1,N_CL
 		ZC=Z_CL(ICL)
 		 DO JGA=2,JMAX
 		 JGAM=JGA-1
-		 IF(Z(JGAM)<=ZC.AND.ZC<Z(JGA)) EXIT 
+		 IF(Z(JGAM)<=ZC.AND.ZC<Z(JGA)) EXIT
          END DO
 ! Z(J-1)=ZC
           IF(ABS(Z(JGAM)-ZC)<GAS_CLOUD) THEN
@@ -158,20 +159,20 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
    MODULE A_MOD_ShW ! 27 Nov.,2003
    REAL*8 Pi,ST_ANG
    PARAMETER  (IHOL=80,Pi=3.14159265359 &
-   ,IM4=1000 & ! DIMENSION of the Arrays for ANGLE scattering simulation. 
-   ,I_FCTR=1) ! I_FCTR=4 for other FORTRAN. 
+   ,IM4=1000 & ! DIMENSION of the Arrays for ANGLE scattering simulation.
+   ,I_FCTR=1) ! I_FCTR=4 for other FORTRAN.
   ALLOCATABLE :: E55(:),ZDOWN(:),ZUP(:) &! Extinction and boundaries in each layer
- ,PH_F_I(:),ST_ANG(:),WFRAC(:,:) & ! Array over STandard ANGle grid, weights of the fractions. 
+ ,PH_F_I(:),ST_ANG(:),WFRAC(:,:) & ! Array over STandard ANGle grid, weights of the fractions.
  ,EFT(:,:),RHT(:,:),EFT_BD(:),RHT_BD(:),SMES(:), PROBFUN(:,:),SCATT(:),ABSS(:),EXTT(:) &
  ,SCEFT(:),ABEFT(:),SCRHT(:),ABRHT(:),PH_LAER(:),PROBMOL(:)
 ! Cheeks (NomA,IMEN_PHF)x2 ; boundaries(NomA)x2, smes(0:IM4), probfun(NLAY,0:IM4),s(NLAY),a(NLAY)
 !                                                             probmol(0:im4)
-  CHARACTER*IHOL, ALLOCATABLE :: ALIST(:),BLIST(:) ! Aerosol's Name-Path in temporary database.
-                              ! Files with Sigma and Int.Phase Functon. 
+  CHARACTER*80, ALLOCATABLE :: ALIST(:),BLIST(:) ! Aerosol's Name-Path in temporary database.
+                              ! Files with Sigma and Int.Phase Functon.
   ALLOCATABLE :: LIST(:),NUFRAC(:), &! Name-pathes catalog, Number of fractions in each layer.
   IEFT_BD(:),IRHT_BD(:) ! REC numbers (NomA)
   INTEGER*4 NLAY, IMEN_PHF, IDIF
- ! Number of Layers with different Phase Functions, DIM for STANDARD grid, Number of Aerosols    
+ ! Number of Layers with different Phase Functions, DIM for STANDARD grid, Number of Aerosols
   REAL*8 WN55 ! Given wavenumber cm^-1 (usually 18181.818... = 0.55 mkm)
  END MODULE A_MOD_ShW
 
@@ -179,12 +180,12 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
  USE A_MOD_ShW
 ! Creating and reading FILES with Atmospheric Optical Properties for Monte-Carlo !
     REAL*8 COP,ANG,C
-  CHARACTER*IHOL AZL,NAME_W,NAME_W2
+  CHARACTER*80 AZL,NAME_W,NAME_W2
   CHARACTER*2 HVOST(99)
-  CHARACTER*IHOL, ALLOCATABLE :: A_ZOL(:,:) ! Aerosol Name-Path 
-  ALLOCATABLE  COP(:),PHF(:)  ! Aerosol Angle grid and Phase function in permanent DATABASE. 
+  CHARACTER*80, ALLOCATABLE :: A_ZOL(:,:) ! Aerosol Name-Path
+  ALLOCATABLE  COP(:),PHF(:)  ! Aerosol Angle grid and Phase function in permanent DATABASE.
 
-! 1 --------------------------------------- ! 
+! 1 --------------------------------------- !
 
       IM_PHF=1 ; ALLOCATE(COP(0:IM_PHF),PHF(0:IM_PHF))
     OPEN(10,FILE='ATM_AEROSOL.MODEL') ! input File - AEROSOL (CLOUD) in Atmosphere
@@ -205,7 +206,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
         CLOSE(8)
 ! *****  Reading information about  AEROSOL (CLOUD) in Atmosphere ***** !
     READ(10,*) NLAYER ; WRITE(9,*)NLAYER ! Number of Layers with different Phase Functions
-   NLAY=ABS(NLAYER) 
+   NLAY=ABS(NLAYER)
    DO NL=1,NLAY
    HVOST(NL)='  '
    IF(NL < 10 )THEN
@@ -218,22 +219,22 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 
 ! This part to DEFINE MAXimal number of fractions in complex aerosol (for dimension) !
    READ(10,*)WN55 ; WN55=-WN55
-   READ(10,*)E555  
+   READ(10,*)E555
       ILM=0
       DO I=1,NLAY
 	  READ(10,*)N_TEC
-      READ(10,*)IL 
+      READ(10,*)IL
       IF(IL > ILM) ILM=IL
       READ(10,*) WWW
         DO J=1,IL
-        READ(10,8)AZL 
+        READ(10,8)AZL
         END DO
  8     FORMAT(A80)
       END DO
 
     ALLOCATE (A_ZOL(NLAY,ILM),WFRAC(NLAY,ILM)) ! Names of aerosol fractions and weights
     REWIND(10)
-    READ(10,*) NLAYER             ! Number of Layers 
+    READ(10,*) NLAYER             ! Number of Layers
    READ(10,*)WN55 ; WRITE(9,*)WN55, ' WaveNumber (cm^-1)' ; WN55=-WN55
     READ(10,*)E55 ; WRITE(9,*)E55 ! Extinctions at 0.55 mkm in each layer
       DO I=1,NLAY
@@ -243,7 +244,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 	  NUFRAC(I)=NFRAC
       READ(10,*) (WFRAC(I,J),J=1,NFRAC)        ! their Weights
       WRITE(9,*) (WFRAC(I,J),J=1,NFRAC)
-	
+
                 SW=0. ! Sum of weights control
 	        DO J=1,NFRAC
 			SW=SW+WFRAC(I,J)
@@ -259,8 +260,8 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
         END DO
        END DO
     CLOSE (10)
-    CLOSE(9) 
-! 2 ***** Information about AEROSOL (CLOUD) in Atmosphere has been written ***** ! 
+    CLOSE(9)
+! 2 ***** Information about AEROSOL (CLOUD) in Atmosphere has been written ***** !
 
 ! 2 **** Files with CROSS-SECTIONS and INTEGRATED PHASE-FUNCTIONS for aerosols in each layer **** !
        DO NL=1,NLAY
@@ -269,46 +270,46 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
        AZL=A_ZOL(NL,IFRAC)
 	   NAME_W='./M-C_OPT_BASE/S_'
       DO J=1,IHOL
-      IF(AZL(J:J) == ' ')EXIT 
+      IF(AZL(J:J) == ' ')EXIT
       IF(AZL(J:J) == '\' .OR. AZL(J:J) == '/')JMIN=J
       END DO
       JMIN=JMIN+1 ; JMAX=J-1 ; LNG=JMAX-JMIN+1 ; LNG=LNG+18
 	  NAME_W(18:LNG)=AZL(JMIN:JMAX) ! file-Name definition (with the cross-sections)
 
-! ------------------------------------------------------------------------------------ ! 
+! ------------------------------------------------------------------------------------ !
   ! File structure :
-  ! 1. (Number wavenumber points. 
+  ! 1. (Number wavenumber points.
   ! 2. (Wavenumber, Scattering coeff., Absorption coeff.)
   ! 3. (Wavenumber, Scattering coeff., Absorption coeff.)
   ! ....   etc.
-   IRECLSS=3*1*I_FCTR ! 3 values, odinary precision, FORTRAN
+   IRECLSS=4*3*1*I_FCTR ! 3 values, odinary precision, FORTRAN
    OPEN(2, ACCESS='DIRECT', FORM='UNFORMATTED',RECL = IRECLSS, FILE=NAME_W,ERR=5)
-! ------------------------------------------------------------------------------------ ! 
+! ------------------------------------------------------------------------------------ !
       A_ZOL(NL,IFRAC)=NAME_W
       READ(2,REC=1,ERR=5)N_ZAP
 !	  WRITE(*,*)' "DIRECT ACCESS" file EXISTS !!!'
 	  GOTO 3
  5     WRITE(*,*)' "DIRECT ACCESS" File should be created !!! '
-!       PAUSE 3	
+!       PAUSE 3
 ! --- Creating files with aerosol optical properties for M-C calculations  !
   NAME_W2=NAME_W ; WRITE(NAME_W2(16:16),'(A1)')'I'
-   WRITE(*,*)NAME_W2  !; PAUSE 100 
-! ------------------------------------------------------------------------------------ ! 
+   WRITE(*,*)NAME_W2  !; PAUSE 100
+! ------------------------------------------------------------------------------------ !
 !   File structure :
 ! 1. - - - - - - - - -  empty - - - - - -
 ! 2. (Itegrated Phase Function over the "standard COS(angle)-grid,IMEN_PHF+1 points)
-! 3. (Itegrated Phase Function over the "standard COS(angle)-grid,IMEN_PHF+1 points) 
+! 3. (Itegrated Phase Function over the "standard COS(angle)-grid,IMEN_PHF+1 points)
   ! ....   etc.
 ! Each record corresponds the wavenumber point.
-   IRECLII=(IMEN_PHF+1)*1*I_FCTR ! number of values, odinary precision, FORTRAN
+   IRECLII=4*(IMEN_PHF+1)*1*I_FCTR ! number of values, odinary precision, FORTRAN
    OPEN(3, ACCESS='DIRECT', FORM='UNFORMATTED',RECL = IRECLII, FILE=NAME_W2,ERR=5)
-! ------------------------------------------------------------------------------------ ! 
+! ------------------------------------------------------------------------------------ !
        OPEN(11,FILE=AZL)
 	    DO NHJ=2,1000000
        READ(11,*,END=101)BDA,RN_PH,SS,SE,SA
        WRITE(2,REC=NHJ)10000./BDA,SS,SA
        N_PH=RN_PH+0.1
-!  PH_F_I(0:IMEN_PHF) 
+!  PH_F_I(0:IMEN_PHF)
         IF(N_PH > IM_PHF ) THEN
 		DEALLOCATE (COP,PHF)
 		IM_PHF=N_PH
@@ -333,7 +334,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
        C=0.5D0*(ST_ANG(N-1)-ST_ANG(N))
        PH_F_I(N-1)=PH_F_I(N)+C*(P1A+P1B)
        P1B=P1A
-       END DO 
+       END DO
        DO N=IMEN_PHF,0,-1
        PH_F_I(N)=PH_F_I(N)/PH_F_I(0) ! Normalizing
        END DO
@@ -341,7 +342,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 
 
   WRITE(3,REC=NHJ)PH_F_I ! Writting the Integrated Phase Function, STANDARD angle grid.
-	
+
        END DO
  101   CLOSE(11)
        NHJ=NHJ-1
@@ -356,7 +357,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
        DEALLOCATE (COP,PHF)
 
 ! 3 ---- Calculations of different aerosol species ---- !
-       IAT=0 
+       IAT=0
   DO I=1,NLAY
      NFRAC=NUFRAC(I)
           DO J=1,NFRAC
@@ -378,7 +379,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
           DO J=1,NFRAC
           IT=IT+1
           AZL=A_ZOL(I,J)
- 
+
            NCA=0
            DO JK=1,IDIF
            IF(AZL == ALIST(JK))THEN
@@ -386,7 +387,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 		   EXIT
            END IF
            END DO
- 
+
           IF(NCA > 0) THEN
 		  LIST(IT)=NCA
 		  ELSE
@@ -397,8 +398,8 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
           END DO
   END DO
   END IF
-  IRECLSS=3*1*I_FCTR ! 3 values, ODINARY precision, FORTRAN
-  IRECLII=(IMEN_PHF+1)*1*I_FCTR ! number of values, ODINARY precision, FORTRAN
+  IRECLSS=4*3*1*I_FCTR ! 3 values, ODINARY precision, FORTRAN
+  IRECLII=4*(IMEN_PHF+1)*1*I_FCTR ! number of values, ODINARY precision, FORTRAN
   DO I=1,IDIF
   BLIST(I)=ALIST(I)
   WRITE(BLIST(I)(16:16),'(A1)')'I'
@@ -414,7 +415,7 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 
 ! 4 -------- The first position of the "cheeks" ------- !
   IEFT_BD=2
-  IRHT_BD=3 
+  IRHT_BD=3
   DO I=1,IDIF
   NU_FS=200+I ; NU_FI=NU_FS+100
   READ(NU_FS,REC=IEFT_BD(I))EFT_BD(I),SCEFT(I),ABEFT(I)
@@ -452,11 +453,11 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 
   RETURN
 
-200 WRITE(*,*)' OPEN error in ',NU_FS ; PAUSE ; STOP  
-300 WRITE(*,*)' OPEN error in ',NU_FI ; PAUSE ; STOP  
+200 WRITE(*,*)' OPEN error in ',NU_FS ; PAUSE ; STOP
+300 WRITE(*,*)' OPEN error in ',NU_FI ; PAUSE ; STOP
 
-  END SUBROUTINE FILES_CREATING 
- 
+  END SUBROUTINE FILES_CREATING
+
  SUBROUTINE INTEGR_PH_F(CUGOL,F1,NP,U1,N1) ! 24 Nov.,2003.
  USE A_MOD_ShW
  REAL*8 CUGOL, A1,A2
@@ -484,10 +485,10 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
           F1O=F1(I1)
           F1N=F1(I2)
           IF(C.GT.F1N)GOTO 1
-          END IF 
+          END IF
           DA=(C-F1O)*(A2-A1)/(F1N-F1O)
           U1(N)=A1+DA
-        END DO 
+        END DO
           U1(N1)=1.0
         END SUBROUTINE INTEGR_PH_F
  SUBROUTINE GRID_GRID(N1,Y1,X1,N2,Y2,X2)
@@ -498,14 +499,14 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
 ! 25 November,2003.                               !
 ! Y1-values over X1-grid (N1 points) to           !
 ! Y2-values over X2-grid (N2 points).             !
-! Attention !!! X1(1)=X2(1)  and X1(N1)=X2(N2)    !                
+! Attention !!! X1(1)=X2(1)  and X1(N1)=X2(N2)    !
 ! LINEAR interpolation is used.                   !
 ! ----------------------------------------------- !
- 
+
  A=X1(1) ; YA=Y1(1) ; J=2 ; B=X1(J) ; YB=Y1(J)
- D=B-A; Y2(1)=YA 
+ D=B-A; Y2(1)=YA
  DO I=2,N2
- X=X2(I) 
+ X=X2(I)
 1 CONTINUE
   IF(X > A .AND. X > B .OR. X < A .AND. X < B) THEN
  A=B; YA=YB
@@ -535,11 +536,11 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
    W1=EFT_BD(I) ; W2=RHT_BD(I) ; I1=IEFT_BD(I); I2=IRHT_BD(I)
    IF(W1 > W2 ) THEN
      IF(W > W1) THEN
-     NU_FS=200+I 
+     NU_FS=200+I
      IB=IEFT_BD(I)-1
 	  DO II=IB,2,-1
-	  READ(NU_FS,REC=II)EFT_BD(I),SCEFT(I),ABEFT(I)	
-	  IF(EFT_BD(I) >= W)EXIT 
+	  READ(NU_FS,REC=II)EFT_BD(I),SCEFT(I),ABEFT(I)
+	  IF(EFT_BD(I) >= W)EXIT
 	  END DO
                      IF(II <= 2) II=2
       I1=II ; I2=I1+1
@@ -548,9 +549,9 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
        NU_FI=NU_FS+100
   READ(NU_FI,REC=I1)(EFT(I,J),J=0,IMEN_PHF)
   READ(NU_FI,REC=I2)(RHT(I,J),J=0,IMEN_PHF)
-      ELSE 
+      ELSE
 	    IF(W < W2) THEN
-     NU_FS=200+I 
+     NU_FS=200+I
      IA=IRHT_BD(I)+1
        DO II=IA,10000
 	   READ(NU_FS,REC=II, ERR=2110)RHT_BD(I),SCRHT(I),ABRHT(I)
@@ -565,12 +566,12 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
   READ(NU_FI,REC=I1)(EFT(I,J),J=0,IMEN_PHF)
   READ(NU_FI,REC=I2)(RHT(I,J),J=0,IMEN_PHF)
 
-	   END IF   
-      END IF     
+	   END IF
+      END IF
 
    ELSE ! W1 < W2
 	 IF(W > W2) THEN
-     NU_FS=200+I 
+     NU_FS=200+I
      IA=IRHT_BD(I)+1
        DO II=IA,10000
 	   READ(NU_FS,REC=II, ERR=2100)RHT_BD(I),SCRHT(I),ABRHT(I)
@@ -580,18 +581,18 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
  2100  II=II-1
  2101  I2=II ; I1=I2-1
 	   IEFT_BD(I)=I1 ; IRHT_BD(I)=I2
-	   READ(NU_FS,REC=I1)EFT_BD(I),SCEFT(I),ABEFT(I) ! 
+	   READ(NU_FS,REC=I1)EFT_BD(I),SCEFT(I),ABEFT(I) !
        NU_FI=NU_FS+100
   READ(NU_FI,REC=I1)(EFT(I,J),J=0,IMEN_PHF)
   READ(NU_FI,REC=I2)(RHT(I,J),J=0,IMEN_PHF)
-	   
- 	 ELSE 
+
+ 	 ELSE
 	       IF(W < W1) THEN
-     NU_FS=200+I 
+     NU_FS=200+I
      IB=IEFT_BD(I)-1
 	  DO II=IB,2,-1
-	  READ(NU_FS,REC=II)EFT_BD(I),SCEFT(I),ABEFT(I)	
-	              IF(EFT_BD(I) <= W)EXIT  
+	  READ(NU_FS,REC=II)EFT_BD(I),SCEFT(I),ABEFT(I)
+	              IF(EFT_BD(I) <= W)EXIT
 	  END DO
       IF(II <= 2) II=2
       I1=II ; I2=I1+1
@@ -601,16 +602,16 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
   READ(NU_FI,REC=I1)(EFT(I,J),J=0,IMEN_PHF)
   READ(NU_FI,REC=I2)(RHT(I,J),J=0,IMEN_PHF)
                END IF
-	  END IF           
- END IF	
+	  END IF
+ END IF
 
    END DO
 ! ---------------------------------------- !
 ! **************** Optical properties of the layers ************* !
-       IAT=0 
+       IAT=0
   DO NL=1,NLAY
      NFRAC=NUFRAC(NL)
-	      SUM_A=0.D0 ; SUM_S=0.D0  
+	      SUM_A=0.D0 ; SUM_S=0.D0
      PH_LAER=0.D0
           DO NF=1,NFRAC
           IAT=IAT+1
@@ -624,13 +625,13 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
           SUM_S=SUM_S+T_S
      PH_LAER=PH_LAER+T_S*(C1*EFT(IA,:)+C2*RHT(IA,:)) ! Phase Function in each layer.
           END DO
-     IF(WN55 > 0.) THEN 
+     IF(WN55 > 0.) THEN
 	 SCATT(NL)=SUM_S * E55(NL)   ! Result - Volume scattering coefficient in ech layer
 	 ABSS(NL)= SUM_A * E55(NL)   ! Result - Volume absorption coefficient in ech layer
 	 EXTT(NL)=SCATT(NL)+ABSS(NL) ! Result - Volume extinction coefficient in ech layer
      PH_LAER=PH_LAER/SUM_S
-     CALL INTEGR_PH_F(ST_ANG,PH_LAER,IMEN_PHF,SMES,IM4) 
-     PROBFUN(NL,:)=SMES ! Result - Array for angle scattering drawing 
+     CALL INTEGR_PH_F(ST_ANG,PH_LAER,IMEN_PHF,SMES,IM4)
+     PROBFUN(NL,:)=SMES ! Result - Array for angle scattering drawing
 	 ELSE
 	 E55(NL)=E55(NL)/(SUM_A+SUM_S) ! Factor to get given extinction coefficient at given wavwnumber
 	 END IF
@@ -660,6 +661,6 @@ ALLOCATE (RLGH(JMAX),S_RLGH(JMAX) & ! For Rayleigh scattering.
         END DO
   IF(L > NLAY) RETURN
  END IF
-  SC_A=SCATT(L) ; AB_A=ABSS(L) 
+  SC_A=SCATT(L) ; AB_A=ABSS(L)
   ZI_OLD=Z_I ; L_OLD=L ; L_NUMB=L
  END

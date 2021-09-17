@@ -21,7 +21,7 @@ MODULE M_C
       END  FUNCTION RAND
 
 PROGRAM UV_ETALON_Monte_Carlo ! 21 August,2021
-USE INITIAL_ShW_CLOUD 
+USE INITIAL_ShW_CLOUD
 USE A_MOD_SHW
 USE M_C
 USE MESH
@@ -31,10 +31,10 @@ USE MESH
 !* "Universal" wavenumber grid  (McW+IR)                       *
 !* Define Path to the spectral database !!!          *
 !***************************************************************
-CHARACTER*70 FIA,FLE_AL,FIT,FIR,HITRAN,LINE_COUPLING*3    
+CHARACTER*70 FIA,FLE_AL,FIT,FIR,HITRAN,LINE_COUPLING*3
 ! ------ VERY IMPORTANT -------------------------------------------- !
 ! Maximal number points in the WaveNumber grid.
-! Please, optimize this parameter, which depends on the number of 
+! Please, optimize this parameter, which depends on the number of
 ! atmospheric levels and the computer memory (in the past NTmax=20481).
 ! ------------------------------------------------------------------ !
 
@@ -46,25 +46,25 @@ REAL*8 VF,VSTART,VFINISH,VEND,FUP,FDO,FLUXUP,FLUXDO,PLUXUP,PLUXDO &
 
 ! ------ VERY IMPORTANT -------------------------------------------- !
 ! Maximal number points in the WaveNumber grid.
-! Please, optimize this parameter, which depends on the number of 
+! Please, optimize this parameter, which depends on the number of
 ! atmospheric levels and the computer memory (in the past NTmax=20481).
 ! ------------------------------------------------------------------ !
   DELTAMAX=50.D0, &
-      LINE_COUPLING='NO ') ! <<< *** WithOUT Line Coupling >>> *** 
+      LINE_COUPLING='NO ') ! <<< *** WithOUT Line Coupling >>> ***
 
-	  COMMON/R_A/VSTART,VFINISH 
+	  COMMON/R_A/VSTART,VFINISH
 	  COMMON/W_N/W_NUM4
 COMMON/CUT_OFF/EPS
 !* ---------------------------------------------------------------- *
           OPEN(IOUT,FILE='CONTROL_FILE.ALB')
 ! ***************************** Example ************************************** !
 !   500.D0   520.D0                                    Spectral Region [cm^-1]
-!   30.0                                               SZA 
+!   30.0                                               SZA
 !   200                Number of photons in 10 cm^-1
 ! c:\databases\ATMOSPHERES\Standard_33\MLS4_300.b95 'File with atmospheric model'
 ! 2                                                  Number of Surfaces
-! c:\databases\Surfaces\SNOW.TXT                 ' Surface Albedo ' 
-! c:\databases\Surfaces\0.2                      ' Surface Albedo ' 
+! c:\databases\Surfaces\SNOW.TXT                 ' Surface Albedo '
+! c:\databases\Surfaces\0.2                      ' Surface Albedo '
 ! Flux&CoollingRate.MLS_SNOW    'Calculated FLUX [W/m^2] and COOLLING RATE  [K/day]'
 ! Flux&CoollingRate.MLS_02      'Calculated FLUX [W/m^2] and COOLLING RATE  [K/day]'
 ! Extraterrestrial Solar Flux  (if 0.0 => STANDARD)
@@ -76,34 +76,34 @@ COMMON/CUT_OFF/EPS
  write(*,*)ANGLE
 
 
- READ(IOUT,*)NGAME 
- write(*,*)NGAME 
+ READ(IOUT,*)NGAME
+ write(*,*)NGAME
 
 
  READ(IOUT,100)FIA
  write(*,*)FIA
 
-LA=1 !### READ(IOUT,*)LA ; 
-ALLOCATE (FLE_AL(LA),ALBED(LA),FIR(LA)) 
-  DO L=1,LA 
+LA=1 !### READ(IOUT,*)LA ;
+ALLOCATE (FLE_AL(LA),ALBED(LA),FIR(LA))
+  DO L=1,LA
    READ(IOUT,100)FLE_AL(L)
    write(*,*)FLE_AL(L)
-   END DO 
-    DO L=1,LA 
-	READ(IOUT,100)FIR(L) 
-	write(*,*)FIR(L) 
+   END DO
+    DO L=1,LA
+	READ(IOUT,100)FIR(L)
+	write(*,*)FIR(L)
 	 END DO
  100    FORMAT(A70)
- S_Insol=0.0 
+ S_Insol=0.0
 ! ############################################## !
  READ(IOUT,*)S_Insol ! Extraterrestrial Solar Flux
-! ############################################## ! 
+! ############################################## !
           CLOSE(IOUT)
-	
+
 	    OPEN(IOUT,FILE='k_coef.in')
-        WRITE(IOUT,*)FIA
+        WRITE(IOUT,'(A)')FIA
 		WRITE(IOUT,100)HITRAN
-		CLOSE(IOUT)  
+		CLOSE(IOUT)
 
 
   X_RAND=130000000001.
@@ -117,21 +117,21 @@ ALLOCATE (FLE_AL(LA),ALBED(LA),FIR(LA))
           WRITE(*,*)' Allocaion is wrong (main) !!!'
           STOP
          END IF
- 
-    CALL FILES_CREATING   
+
+    CALL FILES_CREATING
 
 	FUP=0.D0 ; FDO=0.D0 ; PUP=0.D0 ; PDO=0.D0
 		DO WHILE (VSTART<VEND) ! Loop over WAVENUMBER SUBINTERVALS
   H_MIN=VSTART*4.29E-7*SQRT(200./18.) ! H2O Doppler Halfwidth, T=200.
   H_MIN=(H_MIN+0.05*P1(JMAX)) ! *(1./5.)    ! Typical Pressure broadaning; Accuracy coefficient=1/5.
      h_minSTANDARD=1.d0/4096.0d0 ; if(h_min > h_minSTANDARD) h_min=h_minSTANDARD
-Nper1cm=256 ; H_MIN=1.D0/Nper1cm         
+Nper1cm=256 ; H_MIN=1.D0/Nper1cm
 
     DELTA=H_MIN*(NTmax-1)
-	IF(DELTA>DELTAMAX)DELTA=DELTAMAX 
+	IF(DELTA>DELTAMAX)DELTA=DELTAMAX
               VF=VSTART+DELTA
-CALL GRIDS(NTmax,H_MIN,VSTART,VF)      
-              DELTA=VF-VSTART 
+CALL GRIDS(NTmax,H_MIN,VSTART,VF)
+              DELTA=VF-VSTART
 
 ! ############################################
 
@@ -155,28 +155,28 @@ CALL K_COEF_H_U(LINE_COUPLING) !
 			FUP=FUP+FLUXUP; FDO=FDO+FLUXDO
             PUP=PUP+PLUXUP; PDO=PDO+PLUXDO
 		VSTART=VFINISH
-CALL GRIDS_END 
+CALL GRIDS_END
        	END DO
 !* ---------------------------------- *
 
 !*			Writing			*
-!*   'LAYER' Heating rates  
-IF(S_Insol>0.0)THEN 
+!*   'LAYER' Heating rates
+IF(S_Insol>0.0)THEN
    cs=S_Insol/FDO(la,jmax) ! Correction on the solar distance etc.
 fup=fup*cs ; fdo=fdo*cs ; pup=pup*cs ; pdo=pdo*cs
 END IF
-       
-        DO L=1,LA 
-        QT(L,JMAX)=0.0 
+
+        DO L=1,LA
+        QT(L,JMAX)=0.0
                  DO J=2,JMAX
       QT(L,J)=((FUP(L,J)-FUP(L,J-1))-(FDO(L,J)-FDO(L,J-1))) &
 	           /(P1(J)-P1(J-1))*8.442/1013.25
                  END DO
-        QT(L,1)=QT(L,2)  
+        QT(L,1)=QT(L,2)
          END DO
 !*******  Writing ******
-              DO M=1,LA 
-			  IOT=8432        
+              DO M=1,LA
+			  IOT=8432
        OPEN(IOT,FILE=FIR(M))
 !            WRITE(IOUT,*)START,' - ',VSTART,' cm**(-1)'
 QT(:,JMAX)=0.
@@ -231,7 +231,7 @@ fdoj=FDO(M,J) ; FUPJ=FUP(M,J)
   XY=X1(IE1-I+1) ; X1(IE1-I+1)=X1(I) ; X1(I)=XY
   XY=Y1(IE1-I+1) ; Y1(IE1-I+1)=Y1(I) ; Y1(I)=XY
           END DO
-          END IF 
+          END IF
 
 	  IF(LA == 1) GOTO 10
 ! 2-surface
@@ -254,7 +254,7 @@ fdoj=FDO(M,J) ; FUPJ=FUP(M,J)
   XY=X2(IE2-I+1) ; X2(IE2-I+1)=X2(I) ; X2(I)=XY
   XY=Y2(IE2-I+1) ; Y2(IE2-I+1)=Y2(I) ; Y2(I)=XY
           END DO
-          END IF 
+          END IF
 
 	  IF(LA == 2) GOTO 10
 ! 3-surface
@@ -277,9 +277,9 @@ fdoj=FDO(M,J) ; FUPJ=FUP(M,J)
   XY=X3(IE3-I+1) ; X3(IE3-I+1)=X3(I) ; X3(I)=XY
   XY=Y3(IE3-I+1) ; Y3(IE3-I+1)=Y3(I) ; Y3(I)=XY
           END DO
-          END IF 
+          END IF
 	  IF(LA > 3) THEN
-	  WRITE(*,*)' *** NOT more then 3 surfaces ! ***   ', LA ; STOP 
+	  WRITE(*,*)' *** NOT more then 3 surfaces ! ***   ', LA ; STOP
 	  END IF
 10 CONTINUE
 
@@ -290,7 +290,7 @@ fdoj=FDO(M,J) ; FUPJ=FUP(M,J)
          ELSE
           IF(WAVE_NB >=XB1) THEN
           ALBEDO_N=Y1(IE1)
-          ELSE 
+          ELSE
            DO I=1,IE1
            IF(WAVE_NB >=X1(I).AND.WAVE_NB <= X1(I+1))EXIT
            END DO
@@ -305,7 +305,7 @@ fdoj=FDO(M,J) ; FUPJ=FUP(M,J)
          ELSE
           IF(WAVE_NB >=XB2) THEN
           ALBEDO_N=Y2(IE2)
-          ELSE 
+          ELSE
            DO I=1,IE2
            IF(WAVE_NB >=X2(I).AND.WAVE_NB <= X2(I+1))EXIT
            END DO
@@ -319,7 +319,7 @@ fdoj=FDO(M,J) ; FUPJ=FUP(M,J)
          ELSE
           IF(WAVE_NB >=XB3) THEN
           ALBEDO_N=Y3(IE3)
-          ELSE 
+          ELSE
            DO I=1,IE3
            IF(WAVE_NB >=X3(I).AND.WAVE_NB <= X3(I+1))EXIT
            END DO
