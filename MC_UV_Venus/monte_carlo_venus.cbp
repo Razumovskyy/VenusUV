@@ -31,7 +31,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.f90" />
+		<Unit filename="K_RABMA_UV_2021_5GAS.f90" />
+		<Unit filename="MC_ShW.f90" />
+		<Unit filename="MODULE_MESH08shw.f90" />
+		<Unit filename="M_CARLO_TAU_RaylVenus.f90" />
+		<Unit filename="SUN_UV_Venus.f90" />
+		<Unit filename="UV_5G.f90" />
+		<Unit filename="UV_ETALON_Monte_Carlo.f90" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
