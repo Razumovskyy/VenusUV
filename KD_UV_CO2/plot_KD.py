@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jul 17 13:35:06 2021
-
-plot from binary file with many columns
+Created on Tue Sep  7 15:05:44 2021
 
 @author: taskerbliss
 """
@@ -11,84 +9,39 @@ plot from binary file with many columns
 import matplotlib.pyplot as plt
 import numpy as np
 
-cloud_height = 60 # 50, 54, 60, 64, 70 km
-path = "./RUN_KD_UP/"+"FDO_FUP_FUPap_Q_Qap_ANGLES.dat"
 
-def FQ_read (path_name):
-    
-    with open (path_name) as f:
-        lines = f.readlines()
-    
-    data = [] #list of lists --- all data
-    col = [] #list for one column
-    
-    for i in range (11): # z, and FDO, FUP, FUPap, Q, Qap -- for two angles
-        for line in lines:
-            col.append(line.split()[i])
-        
-        col1 = col.copy() # avoiding alias!! changing one list changes another!
-        data.append(col1)
-        col.clear()
-    
-    return data
-    
-z = FQ_read(path)[0]
-z = np.array(z)
+nmols, crsec = np.loadtxt("Cr-Sect.00deg", skiprows=1 , unpack=True)
 
-FDO = FQ_read(path)[1]
-FDO = [float(item) for item in FDO]
-FDO = np.array(FDO)
-#FDO = np.log10(FDO)
+fig, ax = plt.subplots()
+
+ax.loglog(nmols, crsec)
+
+ax.set_xlim(1e26, 1e14)
+
+ax.set_xlabel('number of molecules along solar ray [cm^-2]')
+ax.set_ylabel('KD cross sec, cm^2')
+
+fig.suptitle('K-term for CO2 FUV. Zenith angle is 0 deg')
+
+ax.grid(True)
+
+plt.show()
 
 
-FUP = FQ_read(path)[2]
-FUP = [float(item) for item in FUP]
-FUP = np.array(FUP)
-#FUP = np.log10(FUP)
-
-
-FUPap = FQ_read(path)[3]
-FUPap = [float(item) for item in FUPap]
-FUPap = np.array(FUPap)
-#FUPap = np.log10(FUPap)
-
-Q = FQ_read(path)[4]
-Q = [float(item) for item in Q]
-Q = np.array(Q)
-
-Qap = FQ_read(path)[5]
-Qap = [float(item) for item in Qap]
-Qap = np.array(Qap)
-    
-def F_plot():
-    
-    plt.plot (FUP, z, color='b', label='upward flux', marker='|', linewidth = 3)
-    plt.plot (FUPap, z, color='r', label='upward KD flux')
-    plt.plot (FDO, z, color='k', label='downward flux')    
-    #plt.plot (FUPap, z, color='r', label='upward KD flux')
-    
-    #plt.xlim([1e-10, 1e-5])
-    #plt.xscale('log')
-    plt.xlabel ("Flux, W/m^2")
-    plt.ylabel ("z, km")
-    plt.title ("Fluxes. Cloud deck is "+ str(cloud_height) + "km. Zenith angle 0. CO2 33333-50000 cm^-1")
-    plt.legend()
-    plt.show() 
-
-def Q_plot():
-    
-    plt.plot (Q, z, color='b', label='heating rate', marker='|', linewidth = 3)
-    plt.plot (Qap, z, color='r', label='KD heating rate')
-      
-    #plt.plot (FUPap, z, color='r', label='upward KD flux')
-    
-    #plt.xlim([1e-10, 1e-5])
-    #plt.xscale('log')
-    plt.xlabel ("Heating rate, K/day")
-    plt.ylabel ("z, km")
-    plt.title ("Heating rates. Cloud deck is "+ str(cloud_height) + "km. Zenith angle 75")
-    plt.legend()
-    plt.show() 
-    
-F_plot()    
-#Q_plot()
+# =============================================================================
+# z, nmols, crsec, FDO  = np.loadtxt("K_FDO_.00deg", skiprows=0 , unpack=True)
+# 
+# fig, ax = plt.subplots()
+# 
+# ax.semilogy(z, crsec)
+# 
+# #ax.set_xlim(1e26, 1e14)
+# 
+# #ax.set_xlabel('number of molecules along solar ray [cm^-2]')
+# ax.set_xlabel('height [km]')
+# ax.set_ylabel('KD cross sec, cm^2')
+# ax.set_title('K-term for CO2 FUV. Zenith angle is 0 deg')
+# ax.grid(True)
+# 
+# plt.show()
+# =============================================================================

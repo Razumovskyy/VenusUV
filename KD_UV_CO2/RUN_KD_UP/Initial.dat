@@ -1,6 +1,6 @@
-50000.0  80000.0                                                         !  Wavenumber Range (cm^1)
+33333.3  50000.0                                                         !  Wavenumber Range (cm^1)
 1.0                                                                      ! Albedo
-./Atmosph_Models/co2_gas_profile_60km.dat                                !   FileName for Atmospher&Result
+./Atmosph_Models/co2_gas_profile_50km.dat                                !   FileName for Atmospher&Result
 2                                                                        ! Number  SZA
 0.0 75.0                                                                 ! Standard SZA
 FLUXES_CHECK.dat                                                       ! File-Name  for CALC.

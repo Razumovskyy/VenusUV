@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1632429483 source:/home/taskerbliss/fortran/venus_uv/KD_UV_SO2/RUN_KD_DO/KD_SO2.f90
+
+1632426131 source:/home/taskerbliss/fortran/venus_uv/KD_UV_SO2/RUN_KD_DO/SUN_UV.f90
+
+1632426131 source:/home/taskerbliss/fortran/venus_uv/KD_UV_SO2/RUN_KD_DO/UV_SO2.f90
+
+1632426131 source:/home/taskerbliss/fortran/venus_uv/KD_UV_UUV/RUN_KD_DO/SUN_UV.f90
+

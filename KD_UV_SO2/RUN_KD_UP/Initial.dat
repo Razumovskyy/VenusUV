@@ -1,4 +1,4 @@
-25000.0  25050.0                                                     ! Wavenumber Range (cm^-1)
+25000 31000.0                                                ! Wavenumber Range (cm^-1)
 1.0                                                                  ! Albedo
 ./Atmosph_Models/so2_gas_profile_50km.dat                                ! FileName for Atmospher&Result
 2                                                                    ! Number  SZA

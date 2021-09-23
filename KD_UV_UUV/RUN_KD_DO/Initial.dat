@@ -1,0 +1,7 @@
+31000.0  33333.3                                                     ! Wavenumber Range (cm^-1)
+1.0                                                                  ! Albedo
+./Atmosph_Models/UUV_gas_profile.dat                                ! FileName for Atmospher&Result
+2                                                                    ! Number  SZA
+0.0 75.0                                                             ! Standard SZA
+FLUXES_CHECK.dat                                                     ! File-Name  for CALC.
+

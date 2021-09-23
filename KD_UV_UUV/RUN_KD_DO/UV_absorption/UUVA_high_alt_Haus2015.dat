@@ -1,0 +1,7 @@
+#unknown UV-absorber photoabsorption cross section from Haus2015 (high-altitude mode)
+5
+280.0      1e-11
+300.0      1e-10
+319.0      5e-9
+350.0      1.5e-8
+400.0      8e-9
