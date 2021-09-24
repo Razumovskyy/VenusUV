@@ -14,7 +14,7 @@ import numpy as np
 path = "./Results/Calc-21Sept/"
 
 FUV_names = ['CO2_30deg.50000-8E4', '5gas_30deg_400.50000-8E4']
-MUV_names = ['CO2.33333-50', '6Gases.33333-50']
+MUV_names = ['CO2_SO2.33333-50', '6Gases.33333-50']
 NUVa_names = ['SO2.31-33333', '6Gases.31-33333']
 NUVb_names = ['UVX.25-31', '6Gases.25-31']
 
@@ -46,7 +46,7 @@ FDO = []
 FUP = []
 Q = []
 
-for n in NUVb_names: #MUV_names, NUVa_names, NUVb_names
+for n in MUV_names: #MUV_names, NUVa_names, NUVb_names
     
     z.append(FQ_read(path + n)[1])
     FDO.append(FQ_read(path + n)[4])
@@ -62,17 +62,17 @@ def F_plot():
     
     fig, ax = plt.subplots()
     
-    ax.plot(z[0], FDO[0], 'k--', label='downward flux UV-absorber only')
-    ax.plot(z[1], FDO[1], 'k', label='downward flux UVx')
-    ax.plot(z[0], FUP[0], 'b--', label='upward flux UV-absorber only')
-    ax.plot(z[1], FUP[1], 'b', label='upward flux UVx')
+    ax.plot(z[0], FDO[0], 'k--', label='downward flux CO2 & SO2 only')
+    ax.plot(z[1], FDO[1], 'k', label='downward flux all gases')
+    ax.plot(z[0], FUP[0], 'b--', label='upward flux CO2 & SO2 only')
+    ax.plot(z[1], FUP[1], 'b', label='upward flux all gases')
     #ax.set_xlim(150,0)
     ax.set_xlabel("z, km")
     ax.set_ylabel("Flux, W/m^2")
     
     ax.grid(True)
     
-    fig.suptitle("Fluxes from etalon simulations. Zenith angle 30 deg. 25000 - 31000 cm^-1")
+    fig.suptitle("Fluxes from etalon simulations. Zenith angle 30 deg. 33333 - 50000 cm^-1")
     plt.legend()
     
     
@@ -80,16 +80,16 @@ def Q_plot():
     
     fig, ax = plt.subplots()
     
-    ax.plot(z[0], Q[0], 'r--', label='heating rate UV-absorber only')
-    ax.plot(z[1], Q[1], 'r', label='heating rate UVx')
+    ax.plot(z[0], Q[0], 'r--', label='heating rate CO2 & SO2 only')
+    ax.plot(z[1], Q[1], 'r', label='heating rate all gases')
     ax.set_xlim(150, 0)
     ax.set_xlabel("z, km")
     ax.set_ylabel("Heating rate, K/day")
     
     ax.grid(True)
     
-    fig.suptitle("Heating rates from etalon simulations. Zenith angle 30 deg. 25000 - 31000 cm^-1")
+    fig.suptitle("Heating rates from etalon simulations. Zenith angle 30 deg. 33333 - 50000 cm^-1")
     plt.legend()
 
-#F_plot()    
-Q_plot()
+F_plot()    
+#Q_plot()
