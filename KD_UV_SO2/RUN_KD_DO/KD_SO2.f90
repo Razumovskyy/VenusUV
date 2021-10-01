@@ -1,18 +1,22 @@
 ! *** No any upward fluxes calculations etc. Only CROSS-SECTIONS calculations ***!
+IMPLICIT REAL*8 (A-H, O-Z)
 CHARACTER ATM_PATH*100,RES*20, ATM*3
-INTEGER*4  JMAX,NAGL
+!INTEGER*4  JMAX,NAGL
 REAL*4  V1,V2,ALBEDO
-PARAMETER (NTH=1001, DELT=1.0, H=DELT/(NTH-1.0), NAGL=2,J200=200,CP_CONST=3.963) !  *** CP_CONST for  Venus = 3.963 (see Heating Rates calc.)***'
+PARAMETER (NTH=1001, DELT=1.0D0, H=DELT/(NTH-1.0D0), NAGL=2,J200=200,CP_CONST=3.963D0) !  *** CP_CONST for  Venus = 3.963 (see Heating Rates calc.)***'
 ! ***  DELT=100.0 means the given spectral region (V1,V2) in calculations is dIvided by (V1,V1+100.0), (V1+100.0,V1+200.0),...,(V2-100.0,V2 intervals). (All in cm-1).
 ! *** in each interval are NTH=1001points, distance between points H=DELT/(NTH-1.0)   (0.1 cm-1 for the given example).
 ! *** J200 - maximal number of the horizontal levels in the atmosphere.Really it is  JMAX  (JMAX should be < or = j200 now 200).
 ! *** NAGL- maximal number of the solar zenith angles (now NAGL=2).
 
-REAL*4 Z(J200),TAUMA(J200),TAUMA_EF(J200,NAGL),P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL), &
+REAL*4 SUN, V, UV_Absorption
+REAL*8 Z(J200),TAUMA(J200),TAUMA_EF(J200,NAGL),P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL), &
         FDO(J200,NAGL),FLUXDO(J200,NAGL),SUMRO(J200)
+COMMON/AAA/V1,V2,ALBEDO,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES
 
 ! ***
-CALL  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES)
+CALL  ATM_PROF_READING
+WRITE(*,*)V1, V2
 !*** In this subroutine will be defined:
 !*** V1,V2 - Spectral Region (cm-1) ; ALBEDO  - Albedo (usually 1.0);  NAGL- Maximal Number of Zenith Angles;  NAG- Real Number of Zenith Angles (NAG<=NAGL)
 !*** Z- Array of Altitudes km Z(1,2,...,JMAX)  ; P- Array  of Pressures atm P(1,2,...,JMAX)  ;
@@ -23,13 +27,13 @@ CALL  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO
 WRITE(*,*)ATM_PATH
 OPEN(11,FILE=RES)  ! *** Filename with calc
 
-FLUXDO=0.
+FLUXDO=0.D0
 JMAX1=JMAX-1
-sum=0.0
+sum=0.0D0
 
 DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
 
-    FDO=0.  !*** Arrays for Fluxes at each Altitude Level
+    FDO=0.D0  !*** Arrays for Fluxes at each Altitude Level
     VA=V1+DELT*KKK
     VB=VA+DELT
 
@@ -37,13 +41,13 @@ DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
     DO I=1,NTH  ! *** V-Loop (over each of NTH Wavenamber Points)
 
 ! -----------------------------------------------------------!
-        WES=H/3.    ! *** see Simpthon's Rule for Wavenumber Integration
+        WES=H/3.D0    ! *** see Simpthon's Rule for Wavenumber Integration
 
         IF(I>1.AND.I<NTH)THEN
             IF(I/2*2==I)THEN
-                WES=WES*4.
+                WES=WES*4.D0
             ELSE
-                WES=WES*2.
+                WES=WES*2.D0
             END IF
         END IF
 ! -----------------------------------------------------------!
@@ -55,18 +59,22 @@ DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
 
 ! *** TAU-matrix *** !
 
-        TAUMA=0.
+        TAUMA=0.D0
 
         DO J=JMAX1,1,-1
-            TAUMA(J)=TAUMA(J+1)+A_COEF*0.5*(RO(J+1)+RO(J))*(Z(J+1)-Z(J)) !*** Spectral Optical Depth
+            TAUMA(J)=TAUMA(J+1)+A_COEF*0.5D0*(RO(J+1)+RO(J))*(Z(J+1)-Z(J)) !*** Spectral Optical Depth
         END DO
+        WRITE(*,*)SOL
+        WRITE(*,*)V1
+        PAUSE
+
 
 ! *** DOWNWARD FLUXES ONLY *** !
 
         DO N=1,NAGL
             SO=SOL*CANGLE(N)
             DO J=1,JMAX
-                FDO(J,N)=FDO(J,N)+WES*SO*EXP(-TAUMA(J)/CANGLE(N)) ! *** DONWARD  FLUXES at the V-point. Attention: sum with WES for the wavenumber integration!
+                FDO(J,N)=FDO(J,N)+WES*SO*DEXP(-TAUMA(J)/CANGLE(N)) ! *** DONWARD  FLUXES at the V-point. Attention: sum with WES for the wavenumber integration!
             END DO
         END DO
 
@@ -75,7 +83,7 @@ DO KKK=0,99999   !***  Loop over DELT-intervals  (of 100 cm-1)
 !============================================!
 
     FLUXDO=FLUXDO+FDO  ! *** To obtain fluxes at the whole (V1,V2).
-    IF(VB+1.0>V2)EXIT
+    IF(VB+1.0D0>V2)EXIT
     WRITE(*,*)VA,VB
 
 END DO   ! *** End of the loop over whole (V1, V2) interval. V1=50000, V2=80000 cm^-1
@@ -94,8 +102,8 @@ DO J=1,JMAX
   DO N=1,NAGL
     ddtt=FLUXDO(J,N)/FLUXDO(JMAX,N)
 
-    IF (ddtt<1e-20) ddtt=1e-20
-        TAUMA_EF(J,N)=-ALOG(ddtt)*CANGLE(N) ! *** TAUMA_EF(J,N)=-ALOG((FLUXDO(J,N)/FLUXDO(JMAX,N)))*CANGLE(N) 'Effective' Optical Depth
+    IF (ddtt<1D-20) ddtt=1D-20
+        TAUMA_EF(J,N)=-DLOG(ddtt)*CANGLE(N) ! *** TAUMA_EF(J,N)=-ALOG((FLUXDO(J,N)/FLUXDO(JMAX,N)))*CANGLE(N) 'Effective' Optical Depth
 
   END DO
 END DO
@@ -106,7 +114,7 @@ END DO
 !*** All values are defined at the (Z(j-1)+Z(j))/2.0 , (j=2,3,...,JMAX).
 
 ! *** Calc. for the first Zenith Angle ***
-OPEN(21,FILE='MOLS_SIGMA_FDO_1ANGLE.dat')
+OPEN(21,FILE='8_MOLS_SIGMA_FDO_1ANGLE.dat')
 ! *** printed values in file:
 ! Zj km, SUMROj mol/cm**2 , DONWARD  Fluxe wt/m**2 ('Exact' only')
 !***
@@ -121,7 +129,7 @@ END DO
 CLOSE(21)
 
 ! *** Calc. for the second Zenith Angle ***
-OPEN(21,FILE='MOLS_SIGMA_FDO_2ANGLE.dat')
+OPEN(21,FILE='8_MOLS_SIGMA_FDO_2ANGLE.dat')
 ! *** printed values as for the first zenith angle ***
 N=2
 
@@ -157,15 +165,20 @@ CLOSE(21)
 END
 
 
-SUBROUTINE  ATM_PROF_READING(V1,V2,ALBEDO,NAGL,J200,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES)
+SUBROUTINE  ATM_PROF_READING
+IMPLICIT REAL*8 (A-H, O-Z)
 CHARACTER ATM_PATH*100,ATM_NAME*120, GAS_NAME*4, RES*50
-REAL*4 Z(J200),P(J200),ANGLE(NAGL),RO(J200),CANGLE(NAGL),SUMRO(J200)
+COMMON/AAA/V1,V2,ALBEDO,JMAX,Z,P,ANGLE,RO,CANGLE,NAG,SUMRO,ATM_PATH,RES
+REAL*8 Z(200),P(200),ANGLE(2),RO(200),CANGLE(2),SUMRO(200)
 
  ! --- Reading of Initial Data in FILE='Initial.dat'--- !
 
     !OPEN(66,FILE='Check-inform.dat') ! *** here would be printed gas profile from ATM_PATH - for control
+	NAGL=2
+	J200=200
 	OPEN(99,FILE='Initial.dat')
 	READ(99,*)V1,V2
+	WRITE(*,*) V1
 	READ(99,*)ALBEDO
 
 	READ(99,98)ATM_PATH  ! *** File with Atmospheric Model
