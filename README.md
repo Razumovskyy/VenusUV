@@ -44,6 +44,8 @@ II. Scientific part: explanation of underlying theory, models description, links
 
 Data files with mixing ratios of gaseous constituents have extensions .hq and are located in directories named by gases in **./venus_uv_prj/Atmosph_Models**. From 0 to 80 km data is according to Haus2015 and Tsang2008. From 80 to 140 km data is roughly interpolated if mixing ration is constant (for all gases except SO2 and CO). In the case of SO2 and CO data from 80 to 140 km is still questioned.
 
+Last UPD Nov 8 2022
+
 # License
 
 This project is supplied with GNU general public license v3.0
